@@ -1,6 +1,6 @@
 # Http Traffic Manager
 
-## This module is a layer 7 firewall which is able to monitor, filter, and block the cyberthreats and harmful traffic. The main cyberattacks.
+## This module is a layer 7 firewall which is able to monitor, filter, and block the cyberthreats and harmful traffic.
 
 > HTM initializing.
 
