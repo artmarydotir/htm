@@ -47,9 +47,6 @@
             </v-card-actions>
           </v-form>
         </v-col>
-
-        <v-spacer></v-spacer>
-        <!-- <v-col sm="12" md="2" lg="4"> </v-col> -->
       </v-row>
     </v-card-text>
   </v-card>
