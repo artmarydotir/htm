@@ -1,0 +1,31 @@
+{
+  "header": {
+    "META_TITLE": "Aasaam Panel",
+    "META_DESC": "Aasam panel Description"
+  },
+  "links": {
+    "home": "Home",
+    "about": "user",
+    "english": "English version",
+    "post": "post",
+    "farsi": "farsi version",
+    "date": "date time",
+    "pwa": "progressive web app",
+    "dashboard" : "Dashboard",
+    "files" : "Files Management",
+    "upload" : "File Upload",
+    "adv" : "Adv management"
+  },
+  "home": {
+    "title": "Welcome",
+    "introduction": "This is an introduction in English."
+  },
+  "about": {
+    "title": "About",
+    "introduction": "This page is made to give you more information."
+  },
+  "inspire": "First, solve the problem. Then, write the code.",
+  "validation": {
+    "required": "First, solve the problem. Then, write the code."
+  }
+}
