@@ -28,7 +28,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/i18n.js'],
+  plugins: ['~/plugins/i18n.js', '~/plugins/vuelidate.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -37,6 +37,13 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify'
   ],
+  manifest: {
+    name: 'aasaam',
+    short_name: 'htm',
+    lang: 'en',
+    display: 'standalone',
+    start_url: '/'
+  },
   /*
    ** Nuxt.js modules
    */
@@ -68,5 +75,6 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
-  }
+  },
+  vendor: ['vuelidate', 'axios', 'vue-i18n']
 }
