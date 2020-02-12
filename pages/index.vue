@@ -1,52 +1,27 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div class="text-center">
-        <!-- <logo />
-        <vuetify-logo /> -->
-      </div>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to Htm
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur
-            sint vitae, omnis est consectetur, optio a magnam cupiditate odit,
-            minima nemo consequuntur deserunt voluptate. Dignissimos nesciunt
-            asperiores eveniet temporibus modi?
+  <v-content>
+    <v-container class="fill-height" fluid>
+      <v-row align="center" justify="center">
+        <v-col cols="12">
+          <p class="display-2 text-center justify-center pb-4">
+            Http Trafic Manager
           </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a href="https://nuxtjs.org/" target="_blank">
-            Nuxt Documentation
-          </a>
-          <br />
-          <a href="https://github.com/nuxt/nuxt.js" target="_blank">
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire">
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+        </v-col>
+        <v-col cols="12" sm="12" md="10" lg="8">
+          <Login />
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-content>
 </template>
 
 <script>
-// import Logo from '~/components/Logo.vue'
-// import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import Login from '~/components/User/Login.vue';
 
 export default {
+  layout: 'login',
   components: {
-    // Logo,
-    // VuetifyLogo
+    Login
   }
 };
 </script>

@@ -57,6 +57,9 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+  router: {
+    mode: 'hash'
+  },
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -77,4 +80,4 @@ export default {
     extend(config, ctx) {}
   },
   vendor: ['vuelidate', 'axios', 'vue-i18n']
-}
+};
