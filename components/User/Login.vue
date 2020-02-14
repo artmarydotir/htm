@@ -129,7 +129,8 @@ export default {
       this.submitted = true;
       this.$v.$touch();
       if (this.$v.user.$error) return;
-      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user));
+      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user));
+      this.$router.push('/dashboard');
     }
   }
 };
