@@ -21,13 +21,11 @@
                 name="login"
                 type="email"
                 outlined
+                required
+                prepend-inner-icon="mdi-email-outline"
                 @input="$v.user.email.$touch()"
                 @blur="$v.user.email.$touch()"
-              >
-                <template v-slot:prepend-inner>
-                  <v-icon class="mr-2">mdi-email-outline</v-icon>
-                </template>
-              </v-text-field>
+              />
             </v-col>
             <v-col class="mx-auto" cols="12" md="9" lg="8">
               <v-text-field
@@ -39,14 +37,12 @@
                 :type="show1 ? 'text' : 'password'"
                 outlined
                 small
+                required
+                prepend-inner-icon="mdi-lock"
                 @click:append="show1 = !show1"
                 @input="$v.user.password.$touch()"
                 @blur="$v.user.password.$touch()"
-              >
-                <template v-slot:prepend-inner>
-                  <v-icon class="mr-2">mdi-lock</v-icon>
-                </template>
-              </v-text-field>
+              />
             </v-col>
             <v-card-actions class="mx-auto text-center justify-center">
               <v-btn
@@ -130,7 +126,7 @@ export default {
       this.$v.$touch();
       if (this.$v.user.$error) return;
       // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user));
-      this.$router.push('/dashboard');
+      this.$router.push('/dashboard/');
     }
   }
 };
