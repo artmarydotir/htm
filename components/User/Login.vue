@@ -8,36 +8,53 @@
           >
             WELCOME
           </v-card-title>
-          <v-form ref="form" v-model="valid">
+          <v-form
+            v-model="valid"
+            novalidate="true"
+            @submit.prevent="handleSubmit"
+          >
             <v-col class="mx-auto" cols="12" md="9" lg="8">
-              <v-text-field label="Email" name="login" type="text" outlined>
+              <v-text-field
+                v-model.trim="user.email"
+                :error-messages="emailErrors"
+                label="Email"
+                name="login"
+                type="email"
+                outlined
+                @input="$v.user.email.$touch()"
+                @blur="$v.user.email.$touch()"
+              >
                 <template v-slot:prepend-inner>
-                  <v-icon class="mr-2" v-on="on">mdi-email-outline</v-icon>
+                  <v-icon class="mr-2">mdi-email-outline</v-icon>
                 </template>
               </v-text-field>
             </v-col>
             <v-col class="mx-auto" cols="12" md="9" lg="8">
               <v-text-field
-                v-model="pass"
+                v-model.trim="user.password"
+                :error-messages="passwordErrors"
+                :counter="6"
                 label="Password"
                 :append-icon="show1 ? 'mdi-eye-off-outline' : 'mdi-eye'"
-                :type="show1 ? 'text' : 'mdi-password'"
-                :disabled="otp.length > 0 ? '' : disabled"
+                :type="show1 ? 'text' : 'password'"
                 outlined
                 small
                 @click:append="show1 = !show1"
+                @input="$v.user.password.$touch()"
+                @blur="$v.user.password.$touch()"
               >
                 <template v-slot:prepend-inner>
-                  <v-icon class="mr-2" v-on="on">mdi-lock</v-icon>
+                  <v-icon class="mr-2">mdi-lock</v-icon>
                 </template>
               </v-text-field>
             </v-col>
             <v-card-actions class="mx-auto text-center justify-center">
               <v-btn
+                type="submit"
                 x-large
                 color="warning white--text"
-                to="/dashboard/"
                 class="pl-12 pr-12"
+                :disabled="!valid"
               >
                 LOGIN
                 <v-icon right dark>
@@ -68,30 +85,53 @@
 }
 </style>
 <script>
+import { required, minLength, email } from 'vuelidate/lib/validators';
+
 export default {
   name: 'Login',
   data() {
     return {
-      tab: null,
-      valid: true,
-      disabled: false,
+      user: {
+        email: '',
+        password: ''
+      },
+      submitted: false,
       show1: false,
       show2: false,
-      rememberMe: false,
-      otp: '',
-      pass: '',
-      lazy: false
+      valid: true
     };
+  },
+  validations: {
+    user: {
+      email: { required, email },
+      password: { required, minLength: minLength(6) }
+    }
+  },
+  computed: {
+    emailErrors() {
+      const errors = [];
+      if (!this.$v.user.email.$dirty) return errors;
+      !this.$v.user.email.email && errors.push('Must be valid e-mail');
+      !this.$v.user.email.required && errors.push('E-mail is required');
+      return errors;
+    },
+    passwordErrors() {
+      const errors = [];
+      if (!this.$v.user.password.$dirty) return errors;
+      !this.$v.user.password.minLength &&
+        errors.push('Password must be at least 6 characters long');
+      !this.$v.user.password.required && errors.push('Password is required.');
+      return errors;
+    }
+  },
+  methods: {
+    handleSubmit(e) {
+      this.submitted = true;
+      this.$v.$touch();
+      if (this.$v.user.$error) return;
+      alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user));
+    }
   }
 };
 </script>
-<style lang="scss" scoped>
-// .v-icon .mdi-email-outline {
-//   font-size: 10px !important;
-//   margin-right: 8px !important;
-//   color: red !important;
-// }
-// .v-input__icon--append .v-icon {
-//   color: purple !important;
-// }
-</style>
+<style lang="scss" scoped></style>
