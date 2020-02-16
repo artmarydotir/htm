@@ -1,44 +1,77 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
+      :clipped="$vuetify.breakpoint.lgAndUp"
       app
+      temporary
+      absolute
+      width="300px"
+      src="/sidebar-1.jpg"
     >
-      <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
+      <v-list nav dense>
+        <v-list-item two-line>
+          <v-list-item-avatar>
+            <img src="/aasaam.png" />
+          </v-list-item-avatar>
+
           <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
+            <v-list-item-title>Welcome</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list-item v-for="item in admins" :key="item.title" class="mt-3" link>
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <!-- 2 -->
+        <v-list-group
+          v-for="item in items"
+          :key="item.title"
+          v-model="item.active"
+          :prepend-icon="item.icon"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="subItem in item.items"
+            :key="subItem.title"
+            class="py-2"
+            :to="subItem.link"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+        <!-- 2 -->
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
+
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>home</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>android</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>home</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
+      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+        <span class="hidden-sm-and-down">
+          HTM
+        </span>
+      </v-toolbar-title>
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
+      <v-btn icon>
+        <v-icon>mdi-apps</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon>mdi-bell</v-icon>
       </v-btn>
     </v-app-bar>
     <v-content>
@@ -46,48 +79,53 @@
         <nuxt />
       </v-container>
     </v-content>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
-    };
-  }
+  data: () => ({
+    drawer: null,
+    admins: [
+      {
+        icon: 'mdi-contacts',
+        title: 'Contacts',
+        link: '/addTag'
+      },
+      {
+        icon: 'mdi-history',
+        title: 'Duplicates',
+        link: '/listTag'
+      }
+    ],
+    items: [
+      {
+        icon: 'mdi-toolbox-outline',
+        title: 'Frequently contacted',
+        active: true,
+        items: [
+          {
+            title: 'Duplicates',
+            link: '/service/add'
+          },
+          {
+            title: 'Create label',
+            link: '/service/list'
+          }
+        ]
+      }
+    ]
+  })
 };
 </script>
+<style scoped>
+.v-navigation-drawer__content,
+.v-list {
+  background-color: #131415ef !important;
+  height: 100%;
+  /* background: #131415c7 !important; */
+}
+.theme--dark.v-navigation-drawer {
+  background-color: #131415ef !important;
+}
+</style>
