@@ -111,7 +111,7 @@ export default {
           },
           {
             title: 'List Certificate',
-            link: '/service/list'
+            link: '/certificate/list'
           }
         ]
       }
