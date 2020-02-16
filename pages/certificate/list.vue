@@ -1,11 +1,9 @@
 <template>
   <v-content>
-    <v-container class="fill-height" fluid>
+    <v-container>
       <v-row align="center" justify="center">
         <v-col cols="12">
-          <p class="display-2 text-center justify-center pb-4">
-            list
-          </p>
+          <certificateList />
         </v-col>
       </v-row>
     </v-container>
@@ -13,5 +11,11 @@
 </template>
 
 <script>
-export default {};
+import certificateList from '@/components/certificate/certificateList.vue';
+
+export default {
+  components: {
+    certificateList
+  }
+};
 </script>
