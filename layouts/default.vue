@@ -33,9 +33,11 @@
         </v-list-item>
         <!-- 2 -->
         <v-list-group
-          v-for="item in items"
+          v-for="item in certis"
           :key="item.title"
           v-model="item.active"
+          no-action
+          value="true"
           :prepend-icon="item.icon"
         >
           <template v-slot:activator>
@@ -45,7 +47,7 @@
           </template>
 
           <v-list-item
-            v-for="subItem in item.items"
+            v-for="subItem in item.children"
             :key="subItem.title"
             class="py-2"
             :to="subItem.link"
@@ -55,13 +57,12 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-        <!-- 2 -->
       </v-list>
     </v-navigation-drawer>
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+      <v-toolbar-title class="ml-0 pl-4">
         <span class="hidden-sm-and-down">
           HTM
         </span>
@@ -98,18 +99,18 @@ export default {
         link: '/listTag'
       }
     ],
-    items: [
+    certis: [
       {
         icon: 'mdi-toolbox-outline',
-        title: 'Frequently contacted',
+        title: 'Certificate Managment',
         active: true,
-        items: [
+        children: [
           {
-            title: 'Duplicates',
+            title: 'Add Certificate',
             link: '/service/add'
           },
           {
-            title: 'Create label',
+            title: 'List Certificate',
             link: '/service/list'
           }
         ]
