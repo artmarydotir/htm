@@ -71,7 +71,7 @@ export default {
           filter: this.cnameFilter
         },
         {
-          width: '10%',
+          width: '9%',
           text: 'Name',
           sortable: false,
           value: 'name'

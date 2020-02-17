@@ -114,7 +114,7 @@ export default {
         children: [
           {
             title: 'Add Certificate',
-            link: '/service/add'
+            link: '/certificate/form/'
           },
           {
             title: 'List Certificate',
