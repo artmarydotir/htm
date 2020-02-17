@@ -3,7 +3,7 @@
     <v-card-title class="grey darken-3">
       Add Certificate
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="py-4">
       <v-form>
         <v-row>
           <v-col cols="12" md="3">
@@ -57,8 +57,11 @@
     </v-card-text>
     <v-card-actions class="mx-auto text-center justify-center">
       <v-spacer></v-spacer>
-      <v-btn color="pink white--text" class="ma-3">
+      <v-btn color="primary white--text" class="ma-3">
         Add
+      </v-btn>
+      <v-btn color="error white--text" class="ma-3">
+        Clear
       </v-btn>
     </v-card-actions>
   </v-card>
