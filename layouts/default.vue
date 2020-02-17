@@ -76,7 +76,7 @@
       </v-btn>
     </v-app-bar>
     <v-content>
-      <v-container>
+      <v-container :fluid="$vuetify.breakpoint.mdAndUp ? false : true">
         <nuxt />
       </v-container>
     </v-content>
@@ -111,7 +111,7 @@ export default {
           },
           {
             title: 'List Certificate',
-            link: '/certificate/list'
+            link: '/certificate/list/'
           }
         ]
       }
