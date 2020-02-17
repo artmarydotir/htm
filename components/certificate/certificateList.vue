@@ -24,10 +24,12 @@
         </v-col>
       </v-row>
     </template>
-    <template v-slot:item.calories="{ item }">
-      <v-chip small class="pink white--text">
-        {{ item.calories }}
-      </v-chip>
+    <template v-slot:item.sans="{ item }">
+      <v-chip-group mandatory column>
+        <v-chip v-for="i in item.sans" :key="i" small class="teal text--white">
+          {{ i }}
+        </v-chip>
+      </v-chip-group>
     </template>
     <template v-slot:item.action="{ item }">
       <v-icon text class="success--text" @click="editItem(item)">
@@ -54,14 +56,7 @@ import tableData from '@/api/certificate/list.json';
 export default {
   data() {
     return {
-      // Filter models.
-      host_name: '',
       common_name: '',
-      organization: '',
-      typeFilterValue: null,
-      parentFilterValue: null,
-      statusFilterValue: null,
-      // Table data.
       dataList: tableData.data
     };
   },
@@ -69,48 +64,55 @@ export default {
     headers() {
       return [
         {
-          // align: 'center',
           text: 'Common Name',
-          // width: '20%',
+          width: '15%',
           sortable: false,
           value: 'subject.common_name',
-          filter: this.nameFilter
+          filter: this.cnameFilter
         },
         {
+          width: '10%',
           text: 'Name',
           sortable: false,
-          value: 'name',
-          filter: this.nameFilter
+          value: 'name'
         },
         {
+          width: '10%',
           text: 'Organization',
           sortable: false,
-          value: 'issuer.organization',
-          filter: this.servicesFilter
+          value: 'issuer.organization'
         },
         {
+          width: '10%',
           text: 'sigalg',
           sortable: false,
           value: 'sigalg'
         },
         {
+          width: '25%',
           text: 'Sans',
           sortable: false,
           value: 'sans'
         },
         {
+          width: '10%',
           text: 'Start Date',
           value: 'not_before',
-          sortable: true,
-          filter: this.parentFilter
+          sortable: true
         },
         {
+          width: '10%',
           text: 'End Date',
           value: 'not_after',
-          sortable: true,
-          filter: this.parentFilter
+          sortable: true
         },
-        { text: 'Action', value: 'action', sortable: false }
+        {
+          text: 'Action',
+          align: 'center',
+          width: '10%',
+          value: 'action',
+          sortable: false
+        }
       ];
     }
   },
@@ -120,16 +122,14 @@ export default {
      * @param value Value to be tested.
      * @returns {boolean}
      */
-    nameFilter(value) {
+    cnameFilter(value) {
       // If this filter has no value we just skip the entire filter.
-      if (!this.dessertFilterValue) {
+      if (!this.common_name) {
         return true;
       }
       // Check if the current loop value (The dessert name)
       // partially contains the searched word.
-      return value
-        .toLowerCase()
-        .includes(this.dessertFilterValue.toLowerCase());
+      return value.toLowerCase().includes(this.common_name.toLowerCase());
     }
   }
 };
