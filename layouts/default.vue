@@ -58,6 +58,13 @@
           </v-list-item>
         </v-list-group>
       </v-list>
+      <template v-slot:append>
+        <div class="ma-1">
+          <v-btn color="blue darken-4" block to="/">
+            Logout
+          </v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark>
@@ -121,10 +128,12 @@ export default {
 </script>
 <style scoped>
 .v-navigation-drawer__content,
-.v-list {
+.v-navigation-drawer .v-list {
   background-color: #131415ef !important;
   height: 100%;
-  /* background: #131415c7 !important; */
+}
+.v-navigation-drawer__append {
+  background-color: #131415ef !important;
 }
 .theme--dark.v-navigation-drawer {
   background-color: #131415ef !important;
