@@ -57,6 +57,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <!-- 3 -->
+        <v-list-group
+          v-for="item in upstream"
+          :key="item.title"
+          v-model="item.active"
+          no-action
+          value="true"
+          :prepend-icon="item.icon"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="subItem in item.children"
+            :key="subItem.title"
+            class="py-2"
+            :to="subItem.link"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
       <template v-slot:append>
         <div class="ma-1">
@@ -119,6 +145,23 @@ export default {
           {
             title: 'List Certificate',
             link: '/certificate/list/'
+          }
+        ]
+      }
+    ],
+    upstream: [
+      {
+        icon: 'mdi-toolbox-outline',
+        title: 'Upstream Managment',
+        active: true,
+        children: [
+          {
+            title: 'Add Upstream',
+            link: '/upstream/form/'
+          },
+          {
+            title: 'List Upstream',
+            link: '/upstream/list/'
           }
         ]
       }
