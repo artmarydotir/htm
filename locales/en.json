@@ -26,6 +26,7 @@
   },
   "inspire": "First, solve the problem. Then, write the code.",
   "validation": {
-    "required": "First, solve the problem. Then, write the code."
+    "required": "Field {attribute} is required",
+    "email": "Field {attribute} is not a proper email address"
   }
 }
