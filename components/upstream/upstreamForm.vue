@@ -34,19 +34,27 @@
           </v-row>
           <v-divider></v-divider>
           <!-- server  -->
+          <div class="display-1 py-5">
+            <v-icon large>mdi-server</v-icon>
+            <span class="pt-3">
+              Server Fields
+            </span>
+          </div>
           <v-row>
-            <v-col cols="12" md="3">
-              <div class="display-1">
-                <v-icon large>mdi-server</v-icon>
-                <span class="pt-3">
-                  Server Fields
-                </span>
-              </div>
-            </v-col>
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.ip"
-                label="server"
+                label="Server"
+                hint="Server could be ip/host+port"
+                outlined
+                required
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.title"
+                label="Title"
+                hint="Title should be uniqe"
                 outlined
                 required
               />
@@ -54,12 +62,47 @@
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim.number="server.weight"
+                hint="default value of weight is 1."
                 outlined
                 min="1"
                 max="99"
                 label="weight"
                 type="number"
               />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.maxconnection"
+                hint="Could be 0 to unlimited."
+                outlined
+                min="0"
+                label="Max Connection"
+                type="number"
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.maxfails"
+                hint="Sould come with timeout."
+                outlined
+                min="1"
+                label="Max Fails"
+                type="number"
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-checkbox
+                v-model="server.backup"
+                label="Backup"
+                required
+              ></v-checkbox>
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-checkbox
+                v-model="server.down"
+                label="Down"
+                required
+              ></v-checkbox>
             </v-col>
             <!-- <v-col cols="12" md="2">
               <v-slider
@@ -103,10 +146,12 @@ export default {
       valid: true,
       server: {
         ip: null,
-        value: 1,
+        title: 'async',
         weight: 1,
-        cert: null,
-        chain: null
+        maxconnection: 0,
+        maxfails: 0,
+        backup: true,
+        down: false
       },
       upstream: {
         name: ''
