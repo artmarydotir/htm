@@ -107,13 +107,15 @@
           </v-row>
           <v-divider></v-divider>
           <!-- load balance  -->
-          <div class="display-1 py-5">
-            <v-icon large>mdi-ballot-outline</v-icon>
-            <span class="pt-3">
-              Load Balance Methods
-            </span>
-          </div>
           <v-row>
+            <v-col cols="12" class="py-5">
+              <div class="display-1">
+                <v-icon large>mdi-ballot-outline</v-icon>
+                <span class="pt-3">
+                  Load Balance Methods
+                </span>
+              </div>
+            </v-col>
             <v-col cols="12" md="3">
               <v-select
                 v-model="server.balance"
@@ -121,23 +123,59 @@
                 outlined
                 item-text="name"
                 item-key="value"
-                return-object
                 label="Choose method"
                 required
+                return-object
               ></v-select>
             </v-col>
-            <!-- if cookie  -->
-            {{ server.balance.value }}
-            <div v-if="server.balance.value === 'cookie'">
-              <!-- <v-col cols="12" md="3">
-                <v-text-field
-                  v-model.trim="server.cookiename"
-                  label="Cookie Name"
-                  type="text"
-                  outlined
-                />
-              </v-col> -->
-            </div>
+          </v-row>
+          <!-- if cookie  -->
+          <v-row v-if="server.balance.value == 'cookie'">
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.cookiename"
+                label="Cookie Name"
+                type="text"
+                hint="Sets the name of the cookie."
+                outlined
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.expires"
+                label="Cookie Expires"
+                type="text"
+                hint="Sets time for the browser to keep the cookie (here, 1 hour).[optional]"
+                outlined
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.domain"
+                label="Cookie Domain"
+                type="text"
+                hint="Defines the domain for which the cookie is set.[optional]"
+                outlined
+              />
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-text-field
+                v-model.trim="server.path"
+                label="Cookie Path"
+                type="text"
+                hint="Defines the path for which the cookie is set.[optional]"
+                outlined
+              />
+            </v-col>
+            <v-col cols="12" md="1">
+              <v-checkbox
+                v-model="server.httponly"
+                label="Httponly"
+                required
+              ></v-checkbox>
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.keepreq"
@@ -189,7 +227,7 @@ export default {
         },
         {
           name: 'Cookie',
-          value: ' cookie'
+          value: 'cookie'
         },
         {
           name: 'None',
@@ -212,7 +250,11 @@ export default {
         backup: true,
         down: false,
         balance: '',
-        cookiename: '',
+        cookiename: 'srv_id',
+        expires: '',
+        domain: '',
+        path: '',
+        httponly: false,
         keepreq: 100,
         keeptimeout: 60
       },
