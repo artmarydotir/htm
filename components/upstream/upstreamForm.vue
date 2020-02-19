@@ -104,17 +104,62 @@
                 required
               ></v-checkbox>
             </v-col>
-            <!-- <v-col cols="12" md="2">
-              <v-slider
-                v-model="server.value"
-                class="mt-2"
-                label="weight"
-                thumb-color="red"
-                thumb-label
+          </v-row>
+          <v-divider></v-divider>
+          <!-- load balance  -->
+          <div class="display-1 py-5">
+            <v-icon large>mdi-ballot-outline</v-icon>
+            <span class="pt-3">
+              Load Balance Methods
+            </span>
+          </div>
+          <v-row>
+            <v-col cols="12" md="3">
+              <v-select
+                v-model="server.balance"
+                :items="balancing"
+                outlined
+                item-text="name"
+                item-key="value"
+                return-object
+                label="Choose method"
+                required
+              ></v-select>
+            </v-col>
+            <!-- if cookie  -->
+            {{ server.balance.value }}
+            <div v-if="server.balance.value === 'cookie'">
+              <!-- <v-col cols="12" md="3">
+                <v-text-field
+                  v-model.trim="server.cookiename"
+                  label="Cookie Name"
+                  type="text"
+                  outlined
+                />
+              </v-col> -->
+            </div>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.keepreq"
+                hint="defualt is 100."
+                outlined
+                min="0"
+                max="1000000"
+                label="Keepalive Request"
+                type="number"
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="server.keeptimeout"
+                hint="defualt is 60 seconds"
+                outlined
                 min="1"
-                max="99"
-              ></v-slider>
-            </v-col> -->
+                max="3600"
+                label="Keepalive Timeout"
+                type="number"
+              />
+            </v-col>
           </v-row>
           <v-card-actions class="mx-auto text-center justify-center">
             <v-spacer></v-spacer>
@@ -137,6 +182,20 @@ export default {
   name: 'AddGroup',
   data() {
     return {
+      balancing: [
+        {
+          name: 'Hash ip',
+          value: 'ip'
+        },
+        {
+          name: 'Cookie',
+          value: ' cookie'
+        },
+        {
+          name: 'None',
+          value: 'none'
+        }
+      ],
       snackbar: {
         show: false,
         message: null,
@@ -151,7 +210,11 @@ export default {
         maxconnection: 0,
         maxfails: 0,
         backup: true,
-        down: false
+        down: false,
+        balance: '',
+        cookiename: '',
+        keepreq: 100,
+        keeptimeout: 60
       },
       upstream: {
         name: ''
