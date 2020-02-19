@@ -34,13 +34,24 @@
           </v-row>
           <v-divider></v-divider>
           <!-- server  -->
-          <div class="display-1 py-5">
-            <v-icon large>mdi-server</v-icon>
-            <span class="pt-3">
-              Server Fields
-            </span>
-          </div>
-          <v-row>
+          <v-row class="display-1 py-5">
+            <v-col cols="11">
+              <v-icon large>mdi-server</v-icon>
+              <span class="pt-3">
+                Server Fields
+              </span>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="1">
+              <v-btn class="mx-2" fab dark small color="green" @click="add(k)">
+                <v-icon dark>mdi-plus</v-icon>
+              </v-btn>
+              <v-btn class="mx-2" fab dark small color="red">
+                <v-icon dark>mdi-minus</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row v-for="server in servers" :key="server">
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.ip"
@@ -104,8 +115,10 @@
                 required
               ></v-checkbox>
             </v-col>
+            <v-col v-if="servers.length >= 1" cols="12" class="pb-6">
+              <v-divider></v-divider>
+            </v-col>
           </v-row>
-          <v-divider></v-divider>
           <!-- load balance  -->
           <v-row>
             <v-col cols="12" class="py-5">
@@ -227,6 +240,7 @@ export default {
   name: 'AddGroup',
   data() {
     return {
+      divider: false,
       balancing: [
         {
           name: 'Hash ip',
@@ -248,15 +262,17 @@ export default {
         color: null
       },
       valid: true,
-      server: {
-        ip: null,
-        title: 'async',
-        weight: 1,
-        maxconnection: 0,
-        maxfails: 0,
-        backup: true,
-        down: false
-      },
+      servers: [
+        {
+          ip: null,
+          title: 'async',
+          weight: 1,
+          maxconnection: 0,
+          maxfails: 0,
+          backup: true,
+          down: false
+        }
+      ],
       upstream: {
         name: '',
         balance: '',
@@ -333,6 +349,20 @@ export default {
         color: 'warning',
         show: true
       };
+    },
+    add(index) {
+      this.servers.push({
+        ip: null,
+        title: 'async',
+        weight: 1,
+        maxconnection: 0,
+        maxfails: 0,
+        backup: true,
+        down: false
+      });
+    },
+    remove(index) {
+      this.servers.splice(index, 1);
     }
   },
   validations: {
