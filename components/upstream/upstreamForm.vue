@@ -118,7 +118,7 @@
             </v-col>
             <v-col cols="12" md="3">
               <v-select
-                v-model="server.balance"
+                v-model="upstream.balance"
                 :items="balancing"
                 outlined
                 item-text="name"
@@ -130,10 +130,10 @@
             </v-col>
           </v-row>
           <!-- if cookie  -->
-          <v-row v-if="server.balance.value == 'cookie'">
+          <v-row v-if="upstream.balance.value == 'cookie'">
             <v-col cols="12" md="3">
               <v-text-field
-                v-model.trim="server.cookiename"
+                v-model.trim="upstream.cookiename"
                 label="Cookie Name"
                 type="text"
                 hint="Sets the name of the cookie."
@@ -142,16 +142,16 @@
             </v-col>
             <v-col cols="12" md="3">
               <v-text-field
-                v-model.trim="server.expires"
+                v-model.trim="upstream.expires"
                 label="Cookie Expires"
                 type="text"
                 hint="Sets time for the browser to keep the cookie (here, 1 hour).[optional]"
                 outlined
               />
             </v-col>
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
               <v-text-field
-                v-model.trim="server.domain"
+                v-model.trim="upstream.domain"
                 label="Cookie Domain"
                 type="text"
                 hint="Defines the domain for which the cookie is set.[optional]"
@@ -160,7 +160,7 @@
             </v-col>
             <v-col cols="12" md="2">
               <v-text-field
-                v-model.trim="server.path"
+                v-model.trim="upstream.path"
                 label="Cookie Path"
                 type="text"
                 hint="Defines the path for which the cookie is set.[optional]"
@@ -169,8 +169,15 @@
             </v-col>
             <v-col cols="12" md="1">
               <v-checkbox
-                v-model="server.httponly"
+                v-model="upstream.httponly"
                 label="Httponly"
+                required
+              ></v-checkbox>
+            </v-col>
+            <v-col cols="12" md="1">
+              <v-checkbox
+                v-model="upstream.secure"
+                label="Secure"
                 required
               ></v-checkbox>
             </v-col>
@@ -178,7 +185,7 @@
           <v-row>
             <v-col cols="12" md="3">
               <v-text-field
-                v-model.trim="server.keepreq"
+                v-model.trim="upstream.keepreq"
                 hint="defualt is 100."
                 outlined
                 min="0"
@@ -189,7 +196,7 @@
             </v-col>
             <v-col cols="12" md="3">
               <v-text-field
-                v-model.trim="server.keeptimeout"
+                v-model.trim="upstream.keeptimeout"
                 hint="defualt is 60 seconds"
                 outlined
                 min="1"
@@ -248,18 +255,19 @@ export default {
         maxconnection: 0,
         maxfails: 0,
         backup: true,
-        down: false,
+        down: false
+      },
+      upstream: {
+        name: '',
         balance: '',
         cookiename: 'srv_id',
         expires: '',
         domain: '',
-        path: '',
-        httponly: false,
+        path: '/',
+        httponly: true,
+        secure: true,
         keepreq: 100,
         keeptimeout: 60
-      },
-      upstream: {
-        name: ''
       }
     };
   },
