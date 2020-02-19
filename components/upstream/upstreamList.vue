@@ -24,10 +24,15 @@
         </v-col>
       </v-row>
     </template>
-    <template v-slot:item.sans="{ item }">
+    <template v-slot:item.servers="{ item }">
       <v-chip-group mandatory column>
-        <v-chip v-for="i in item.sans" :key="i" small class="teal text--white">
-          {{ i }}
+        <v-chip
+          v-for="i in item.servers"
+          :key="i.name"
+          small
+          class="teal text--white"
+        >
+          {{ i.name }} - {{ i.ip }}
         </v-chip>
       </v-chip-group>
     </template>
@@ -56,7 +61,7 @@ import tableData from '@/api/upstream/list.json';
 export default {
   data() {
     return {
-      common_name: '',
+      name: '',
       dataList: tableData.data
     };
   },
@@ -64,52 +69,19 @@ export default {
     headers() {
       return [
         {
-          text: 'Common Name',
-          width: '15%',
+          text: 'Upstram Name',
+          sortable: true,
+          value: 'name',
+          filter: this.nameFilter
+        },
+        {
+          text: 'Server List',
           sortable: false,
-          value: 'subject.common_name',
-          filter: this.cnameFilter
-        },
-        {
-          width: '9%',
-          text: 'Name',
-          sortable: false,
-          value: 'name'
-        },
-        {
-          width: '10%',
-          text: 'Organization',
-          sortable: false,
-          value: 'issuer.organization'
-        },
-        {
-          width: '10%',
-          text: 'sigalg',
-          sortable: false,
-          value: 'sigalg'
-        },
-        {
-          width: '25%',
-          text: 'Sans',
-          sortable: false,
-          value: 'sans'
-        },
-        {
-          width: '10%',
-          text: 'Start Date',
-          value: 'not_before',
-          sortable: true
-        },
-        {
-          width: '10%',
-          text: 'End Date',
-          value: 'not_after',
-          sortable: true
+          value: 'servers'
         },
         {
           text: 'Action',
           align: 'center',
-          width: '10%',
           value: 'action',
           sortable: false
         }
@@ -122,14 +94,14 @@ export default {
      * @param value Value to be tested.
      * @returns {boolean}
      */
-    cnameFilter(value) {
+    nameFilter(value) {
       // If this filter has no value we just skip the entire filter.
-      if (!this.common_name) {
+      if (!this.name) {
         return true;
       }
       // Check if the current loop value (The dessert name)
       // partially contains the searched word.
-      return value.toLowerCase().includes(this.common_name.toLowerCase());
+      return value.toLowerCase().includes(this.name.toLowerCase());
     }
   }
 };

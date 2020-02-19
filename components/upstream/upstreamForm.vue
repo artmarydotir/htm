@@ -42,16 +42,13 @@
               </span>
             </v-col>
             <v-spacer></v-spacer>
-            <v-col cols="1">
-              <v-btn class="mx-2" fab dark small color="green" @click="add(k)">
-                <v-icon dark>mdi-plus</v-icon>
-              </v-btn>
-              <v-btn class="mx-2" fab dark small color="red">
-                <v-icon dark>mdi-minus</v-icon>
+            <v-col cols="3" md="1">
+              <v-btn color="green" @click="add">
+                Add Server
               </v-btn>
             </v-col>
           </v-row>
-          <v-row v-for="server in servers" :key="server">
+          <v-row v-for="(server, index) in servers" :key="index">
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.ip"
@@ -114,6 +111,12 @@
                 label="Down"
                 required
               ></v-checkbox>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="4">
+              <v-btn class="mx-2" dark color="pink" @click="remove(index)">
+                Delete server
+              </v-btn>
             </v-col>
             <v-col v-if="servers.length >= 1" cols="12" class="pb-6">
               <v-divider></v-divider>
@@ -362,6 +365,7 @@ export default {
       });
     },
     remove(index) {
+      console.log(index);
       this.servers.splice(index, 1);
     }
   },
