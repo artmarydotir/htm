@@ -7,6 +7,9 @@
         :items-per-page="5"
       />
     </v-col>
+    <v-col>
+      {{ dataError }}
+    </v-col>
   </v-row>
 </template>
 
@@ -17,7 +20,20 @@ export default {
   components: {
     certificateList
   },
+  // data() {
+  //   return {
+  //     dataError: []
+  //   };
+  // },
   computed: {
+    ...mapState({
+      datalist: (state) => state.listpost,
+      dataError: (state) => state.listError
+    }),
+    // datalist() {
+    //   console.log(this.$store.state.listpost);
+    //   return this.$store.state.listpost;
+    // },
     headers() {
       return [
         {
@@ -72,6 +88,11 @@ export default {
         }
       ];
     }
+  },
+
+  created() {
+    // mapActions(['fetchComments']);
+    this.$store.dispatch('fetchComments');
   }
 };
 </script>

@@ -28,7 +28,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/i18n.js', '~/plugins/vuelidate.js'],
+  plugins: [
+    '~/plugins/i18n.js',
+    '~/plugins/vuelidate.js'
+    // '~/plugins/repository.js'
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -56,7 +60,9 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  axios: {
+    // baseURL: 'http://localhost:3000/api/'
+  },
   router: {
     mode: 'hash'
   },

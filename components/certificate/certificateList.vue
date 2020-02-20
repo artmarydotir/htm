@@ -2,7 +2,7 @@
   <v-data-table
     fixed-header
     :headers="headers"
-    :items="dataList"
+    :items="datalist"
     :items-per-page="itemsPerPage || 10"
     class="elevation-1"
   >
@@ -52,8 +52,6 @@
 <script>
 // Table info.
 
-import tableData from '@/api/certificate/list.json';
-
 export default {
   props: {
     itemsPerPage: {
@@ -71,12 +69,9 @@ export default {
   },
   data() {
     return {
-      common_name: '',
-      dataList: tableData.data
+      common_name: ''
     };
   },
-  // computed: {
-  // },
   methods: {
     /**
      * Filter for dessert names column.

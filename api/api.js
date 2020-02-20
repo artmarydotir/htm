@@ -38,10 +38,41 @@
 //   }
 // };
 
-// import axios from "axios";
-
 // export const todos = {
 //   getTodos(id) {
 //     return axios.get(`https://jsonplaceholder.typicode.com//todos/${id}`).then(resp => resp.data)
 //   }
+// };
+
+// export default {
+//   // auth: {
+//   //   signin: (data) => axios.post('auth/signin', data),
+//   //   register: (data) => axios.post('auth/signup', data),
+//   //   profile: () => axios.get('me')
+//   // },
+//   certificate: {
+//     // postJob: (data) => axios.post('job', data),
+//     // getAllList: () => axios.get('https://jsonplaceholder.typicode.com/todos/')
+//     getAllList() {
+//       return axios
+//         .get(`https://jsonplaceholder.typicode.com/todos/`)
+//         .then((resp) => resp.data);
+//     }
+//     // getSpecificJob: (id) => axios.get(`job/${id}`),
+//     // deleteSpecificJob: (id) => axios.get(`job/${id}`),
+//     // updateSpecificJob: (id, data) => axios.post(`job/${id}`, data)
+//   }
+// };
+// export default {
+//   create(payload) {},
+
+//   show(id) {},
+
+//   async index() {
+
+//   },
+
+//   update(payload, id) {},
+
+//   delete(id) {}
 // };
