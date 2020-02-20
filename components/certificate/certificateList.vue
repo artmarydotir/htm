@@ -3,6 +3,7 @@
     fixed-header
     :headers="headers"
     :items="dataList"
+    :items-per-page="itemsPerPage || 10"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -32,7 +33,7 @@
       </v-chip-group>
     </template>
     <template v-slot:item.action="{ item }">
-      <v-icon text class="success--text" @click="editItem(item)">
+      <v-icon text class="success--text" :to="`/certificate/${item.id}/edit`">
         mdi-pencil
       </v-icon>
       <v-icon text class="pink--text ml-3 " @click="deleteItem(item)">
@@ -54,68 +55,28 @@
 import tableData from '@/api/certificate/list.json';
 
 export default {
+  props: {
+    itemsPerPage: {
+      type: Number,
+      required: true
+    },
+    headers: {
+      type: Array,
+      required: true
+    },
+    datalist: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       common_name: '',
       dataList: tableData.data
     };
   },
-  computed: {
-    headers() {
-      return [
-        {
-          text: 'Common Name',
-          width: '15%',
-          sortable: false,
-          value: 'subject.common_name',
-          filter: this.cnameFilter
-        },
-        {
-          width: '9%',
-          text: 'Name',
-          sortable: false,
-          value: 'name'
-        },
-        {
-          width: '10%',
-          text: 'Organization',
-          sortable: false,
-          value: 'issuer.organization'
-        },
-        {
-          width: '10%',
-          text: 'sigalg',
-          sortable: false,
-          value: 'sigalg'
-        },
-        {
-          width: '25%',
-          text: 'Sans',
-          sortable: false,
-          value: 'sans'
-        },
-        {
-          width: '10%',
-          text: 'Start Date',
-          value: 'not_before',
-          sortable: true
-        },
-        {
-          width: '10%',
-          text: 'End Date',
-          value: 'not_after',
-          sortable: true
-        },
-        {
-          text: 'Action',
-          align: 'center',
-          width: '10%',
-          value: 'action',
-          sortable: false
-        }
-      ];
-    }
-  },
+  // computed: {
+  // },
   methods: {
     /**
      * Filter for dessert names column.
