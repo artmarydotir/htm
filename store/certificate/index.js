@@ -28,6 +28,9 @@ export const getters = {
 export const mutations = {
   FETCH_LIST(state, payload) {
     state.certificates = payload;
+  },
+  EDIT(state, payload) {
+    state.certificates = payload;
   }
 };
 
@@ -42,6 +45,14 @@ export const actions = {
       const res = await this.$axios.$get('/list1.json');
       commit('FETCH_LIST', res.data);
     } catch (e) {}
+  },
+  async edit({ commit }, fields) {
+    try {
+      const res = await this.$axios.$get(`/cert/edit/${fields.id}`, fields);
+      commit('EDIT', res.data);
+    } catch (e) {
+      console.log(e);
+    }
   }
 };
 

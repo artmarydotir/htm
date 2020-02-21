@@ -33,10 +33,12 @@
       </v-chip-group>
     </template>
     <template v-slot:item.action="{ item }">
-      <v-icon text class="success--text" :to="`/certificate/${item.id}/edit`">
-        mdi-pencil
-      </v-icon>
-      <v-icon text class="pink--text ml-3 " @click="deleteItem(item)">
+      <nuxt-link :to="`/certificate/${item.id}/edit`" link>
+        <v-icon text class="success--text">
+          mdi-pencil
+        </v-icon>
+      </nuxt-link>
+      <v-icon text class="pink--text ml-3 " @click="deleteCert(item)">
         mdi-delete
       </v-icon>
     </template>
