@@ -33,7 +33,7 @@
       </v-chip-group>
     </template>
     <template v-slot:item.action="{ item }">
-      <nuxt-link :to="`/certificate/${item.id}/edit`" link>
+      <nuxt-link :to="`/certificate/edit/${item.id}`" link>
         <v-icon text class="success--text">
           mdi-pencil
         </v-icon>
@@ -88,7 +88,8 @@ export default {
       // Check if the current loop value (The dessert name)
       // partially contains the searched word.
       return value.toLowerCase().includes(this.common_name.toLowerCase());
-    }
+    },
+    deleteCert(id) {}
   }
 };
 </script>

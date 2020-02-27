@@ -1,6 +1,7 @@
 export const state = () => ({
   locale: 'en',
   listpost: [],
+  dialog: false,
   listError: []
 });
 

@@ -88,10 +88,10 @@
           <v-card-actions class="mx-auto text-center justify-center">
             <v-spacer></v-spacer>
             <v-btn type="submit" color="primary white--text" class="ma-3">
-              Add
+              {{ buttonText }}
             </v-btn>
             <v-btn color="error white--text" class="ma-3" @click="clear">
-              Clear
+              {{ cancelAction }}
             </v-btn>
           </v-card-actions>
         </v-form>
@@ -104,6 +104,16 @@
 import { required } from 'vuelidate/lib/validators';
 export default {
   name: 'AddGroup',
+  props: {
+    buttonText: {
+      type: String,
+      required: true
+    },
+    cancelAction: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       snackbar: {
