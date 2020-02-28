@@ -21,6 +21,14 @@
           @submit.prevent="handleSubmit"
         >
           <v-row>
+            <v-col>
+              <v-text-field
+                v-model.trim="fillCert.title"
+                label="test name"
+                type="text"
+                outlined
+              />
+            </v-col>
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="ceretificate.name"
@@ -105,6 +113,10 @@ import { required } from 'vuelidate/lib/validators';
 export default {
   name: 'AddGroup',
   props: {
+    fillCert: {
+      type: Object,
+      required: true
+    },
     buttonText: {
       type: String,
       required: true
@@ -116,6 +128,7 @@ export default {
   },
   data() {
     return {
+      test: '',
       snackbar: {
         show: false,
         message: null,

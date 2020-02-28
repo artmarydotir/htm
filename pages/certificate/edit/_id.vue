@@ -3,7 +3,12 @@
     <v-alert color="pink">
       {{ id }}
     </v-alert>
-    <certificateForm :button-text="'Update'" :cancel-action="'Clear'" />
+    <certificateForm
+      :fill-cert="fill"
+      :button-text="'Update'"
+      :cancel-action="'Clear'"
+    />
+    {{ selected }} ----
   </div>
 </template>
 
@@ -18,16 +23,25 @@ export default {
   },
   data() {
     return {
-      id: ''
+      id: '',
+      fill: {
+        title: 'dd',
+        name: 'dd'
+      }
     };
+  },
+  computed: {
+    ...mapGetters({
+      selected: 'certificate/getCert'
+    })
   },
   mounted() {
     this.id = this.$route.params.id;
-    this.fetchCertificate(this.id);
+    this.fetchCertificate();
   },
   methods: {
     fetchCertificate() {
-      ...mapGetters
+      this.$store.dispatch('certificate/showCert', this.id);
     }
   }
 };

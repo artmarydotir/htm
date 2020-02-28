@@ -5,7 +5,8 @@
 
 export const state = () => ({
   certificates: [],
-  certificatesErrors: []
+  certificatesErrors: [],
+  getOneCert: {}
 });
 
 /**
@@ -17,6 +18,9 @@ export const getters = {
   // get certificate list
   getList(state) {
     return state.certificates;
+  },
+  getCert(state) {
+    return state.getOneCert;
   }
 };
 
@@ -31,6 +35,10 @@ export const mutations = {
   },
   EDIT(state, payload) {
     state.certificates = payload;
+  },
+  SHOW_CERT(state, certId) {
+    state.getOneCert = certId;
+    console.log('im in mutation id', certId);
   }
 };
 
@@ -53,6 +61,16 @@ export const actions = {
     } catch (e) {
       console.log(e);
     }
+  },
+  async showCert({ commit }, certId) {
+    try {
+      console.log('im in action id', certId);
+      const response = await this.$axios.$get(
+        `https://jsonplaceholder.typicode.com/photos/${certId}`
+      );
+      console.log(response);
+      commit('SHOW_CERT', response);
+    } catch (e) {}
   }
 };
 
