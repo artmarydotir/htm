@@ -2,11 +2,18 @@
  * CERTIFICATE
  * STATE
  */
-
 export const state = () => ({
   certificates: [],
   certificatesErrors: [],
-  getOneCert: {}
+  getOneCert: {},
+  todos: [],
+  snackbar: {
+    show: false,
+    message: null,
+    timeout: 100,
+    color: null,
+    e: []
+  }
 });
 
 /**
@@ -36,9 +43,19 @@ export const mutations = {
   EDIT(state, payload) {
     state.certificates = payload;
   },
+  SET_NOTIFICATION(state, payload) {
+    console.log('payload', payload);
+    console.log('state', state);
+    state.snackbar = payload;
+    // set(state, 'status', status);
+    // Vue.set(state.snackbar, 'snackbar', payload);
+  },
   SHOW_CERT(state, certId) {
     state.getOneCert = certId;
     console.log('im in mutation id', certId);
+  },
+  NEW: (state, singleTodo) => {
+    state.todos.unshift(singleTodo);
   }
 };
 
@@ -71,6 +88,30 @@ export const actions = {
       console.log(response);
       commit('SHOW_CERT', response);
     } catch (e) {}
+  },
+  async addTodo({ commit }, title) {
+    try {
+      const response = await this.$axios.post(
+        'https://jsonplaceholder.typicode.com/aaaphotos',
+        {
+          title
+        }
+      );
+      commit('NEW', response.data);
+      commit('SET_NOTIFICATION', {
+        show: true,
+        color: 'green',
+        message: 'success!'
+      });
+    } catch (e) {
+      commit('SET_NOTIFICATION', {
+        show: true,
+        color: 'red',
+        message: 'An error accrued!',
+        e: e.message
+      });
+      console.log('oh hey');
+    }
   }
 };
 

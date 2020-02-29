@@ -1,15 +1,19 @@
 <template>
   <div>
-    <v-snackbar
-      v-model="snackbar.show"
-      :color="snackbar.color"
-      :timeout="snackbar.timeout"
-    >
-      {{ snackbar.message }}
-      <v-btn dark text @click="snackbar.show = false">
-        Close
-      </v-btn>
-    </v-snackbar>
+    {{ snackbar }}
+    <div>
+      <v-snackbar
+        v-model="snackbar.show"
+        :color="snackbar.color"
+        :timeout="snackbar.timeout"
+      >
+        {{ snackbar.message }}
+        <v-btn dark text @click="snackbar.show = false">
+          Close
+        </v-btn>
+      </v-snackbar>
+    </div>
+
     <v-card class="my-8">
       <v-card-title class="grey darken-3">
         Add Certificate
@@ -31,66 +35,15 @@
             </v-col>
             <v-col cols="12" md="3">
               <v-text-field
-                v-model.trim="ceretificate.name"
+                v-model.trim="fillCert.thumbnailUrl"
                 prepend-inner-icon="mdi-account-outline"
                 label="Name"
                 :error-messages="nameError"
                 type="text"
                 outlined
-                @input="$v.ceretificate.name.$touch()"
-                @blur="$v.ceretificate.name.$touch()"
+                @input="$v.fillCert.thumbnailUrl.$touch()"
+                @blur="$v.fillCert.thumbnailUrl.$touch()"
               />
-            </v-col>
-            <v-col cols="12" md="2">
-              <v-file-input
-                v-model="ceretificate.fullchain"
-                :error-messages="fullchainError"
-                outlined
-                chips
-                counter
-                accept=".pem"
-                required
-                label="Full chain"
-                @input="$v.ceretificate.fullchain.$touch()"
-                @blur="$v.ceretificate.fullchain.$touch()"
-              ></v-file-input>
-            </v-col>
-            <v-col cols="12" md="2">
-              <v-file-input
-                v-model="ceretificate.chain"
-                :error-messages="chainError"
-                outlined
-                accept=".pem"
-                chips
-                counter
-                label="Chain"
-                @input="$v.ceretificate.chain.$touch()"
-                @blur="$v.ceretificate.chain.$touch()"
-              ></v-file-input>
-            </v-col>
-            <v-col cols="12" md="2">
-              <v-file-input
-                v-model="ceretificate.key"
-                :error-messages="keyError"
-                outlined
-                chips
-                accept=".pem"
-                counter
-                label="Private key/private"
-                @input="$v.ceretificate.key.$touch()"
-                @blur="$v.ceretificate.key.$touch()"
-              ></v-file-input>
-            </v-col>
-            <v-col cols="12" md="2">
-              <v-file-input
-                v-model="ceretificate.cert"
-                :error-messages="certError"
-                outlined
-                chips
-                accept=".pem"
-                counter
-                label="Cert"
-              ></v-file-input>
             </v-col>
           </v-row>
           <v-card-actions class="mx-auto text-center justify-center">
@@ -110,6 +63,8 @@
 <style lang="scss" scoped></style>
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { mapActions, mapState } from 'vuex';
+
 export default {
   name: 'AddGroup',
   props: {
@@ -129,27 +84,25 @@ export default {
   data() {
     return {
       test: '',
-      snackbar: {
-        show: false,
-        message: null,
-        timeout: 6000,
-        color: null
-      },
-      valid: true,
-      ceretificate: {
-        fullchain: null,
-        key: null,
-        name: '',
-        cert: null,
-        chain: null
-      }
+      valid: true
+      // ceretificate: {
+      //   fullchain: null,
+      //   key: null,
+      //   name: '',
+      //   cert: null,
+      //   chain: null
+      // }
     };
   },
   computed: {
+    ...mapState({
+      snackbar: (state) => state.certificate.snackbar
+    }),
     nameError() {
       const errors = [];
-      if (!this.$v.ceretificate.name.$dirty) return errors;
-      !this.$v.ceretificate.name.required && errors.push('Field is required');
+      if (!this.$v.fillCert.thumbnailUrl.$dirty) return errors;
+      !this.$v.fillCert.thumbnailUrl.required &&
+        errors.push('Field is required');
       return errors;
     },
     fullchainError() {
@@ -182,40 +135,52 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      addme: 'certificate/addTodo'
+    }),
     handleSubmit(e) {
+      // this.$emit('readyToUpdate', this.fillCert);
       this.submitted = true;
       this.$v.$touch();
-
-      if (this.$v.ceretificate.$error) {
-        this.snackbar = {
-          message: 'please check all errors!',
-          color: 'pink',
-          show: true
-        };
-        return;
+      if (this.$v.fillCert.$error) {
+        this.$v.$touch();
+      } else {
+        // console.log('my component fillcert ', this.fillCert);
+        this.addme(this.fillCert);
+        if (this.snackbar.color === 'red') {
+          console.log(this.snackbar.color);
+          this.$router.push({
+            path: `/certificate/edit/${this.$route.params.id}`
+          });
+        } else {
+          // setTimeout(
+          //   () => this.$router.push({ path: '/certificate/list/' }),
+          //   4000
+          // );
+        }
+        // this.$store.dispatch('certificate/addTodo', this.fillCert);
       }
-      this.$router.push('/certificate/list/');
     },
     clear() {
       this.$v.$reset();
-      this.ceretificate.name = '';
-      this.ceretificate.fullchain = null;
-      this.ceretificate.cert = null;
-      this.ceretificate.chain = null;
-      this.snackbar = {
+      this.fillCert.name = '';
+      this.fillCert.fullchain = null;
+      this.fillCert.cert = null;
+      this.fillCert.chain = null;
+      this.$store.commit('certificate/SET_NOTIFICATION', {
         message: 'All validation cleared!',
         color: 'warning',
         show: true
-      };
+      });
     }
   },
   validations: {
-    ceretificate: {
-      name: { required },
-      fullchain: { required },
-      key: { required },
-      cert: { required },
-      chain: { required }
+    fillCert: {
+      title: { required },
+      thumbnailUrl: { required }
+      // key: { required },
+      // cert: { required },
+      // chain: { required }
     }
   }
 };

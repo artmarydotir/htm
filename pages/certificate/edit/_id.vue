@@ -4,11 +4,12 @@
       {{ id }}
     </v-alert>
     <certificateForm
-      :fill-cert="fill"
+      :fill-cert="selected"
       :button-text="'Update'"
       :cancel-action="'Clear'"
     />
-    {{ selected }} ----
+    {{ selected }} ---- {{ selected.title }} ----
+    <v-alert color="red"> state : {{ fill.name }} </v-alert>
   </div>
 </template>
 
@@ -26,7 +27,7 @@ export default {
       id: '',
       fill: {
         title: 'dd',
-        name: 'dd'
+        name: this.$store.state.certificate.getOneCert
       }
     };
   },
