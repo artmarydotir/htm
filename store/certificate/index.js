@@ -92,7 +92,7 @@ export const actions = {
   async addTodo({ commit }, title) {
     try {
       const response = await this.$axios.post(
-        'https://jsonplaceholder.typicode.com/aaaphotos',
+        'https://jsonplaceholder.typicode.com/photos',
         {
           title
         }
@@ -103,12 +103,15 @@ export const actions = {
         color: 'green',
         message: 'success!'
       });
+      // if(response.status == 200 || response.status == 204){
+      //   commit('DELETE', video.id);
+      // }
     } catch (e) {
       commit('SET_NOTIFICATION', {
         show: true,
         color: 'red',
         message: 'An error accrued!',
-        e: e.message
+        e: e.name
       });
       console.log('oh hey');
     }

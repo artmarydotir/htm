@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ snackbar }}
     <div>
       <v-snackbar
         v-model="snackbar.show"
@@ -19,13 +18,9 @@
         Add Certificate
       </v-card-title>
       <v-card-text class="py-4">
-        <v-form
-          v-model="valid"
-          novalidate="true"
-          @submit.prevent="handleSubmit"
-        >
+        <v-form v-model="valid" novalidate="true">
           <v-row>
-            <v-col>
+            <!-- <v-col>
               <v-text-field
                 v-model.trim="fillCert.title"
                 label="test name"
@@ -44,13 +39,94 @@
                 @input="$v.fillCert.thumbnailUrl.$touch()"
                 @blur="$v.fillCert.thumbnailUrl.$touch()"
               />
+            </v-col> -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="ceretificate.name"
+                prepend-inner-icon="mdi-account-outline"
+                label="Name"
+                :error-messages="nameError"
+                type="text"
+                outlined
+                @input="$v.ceretificate.name.$touch()"
+                @blur="$v.ceretificate.name.$touch()"
+              />
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-file-input
+                v-model="ceretificate.fullchain"
+                :error-messages="fullchainError"
+                outlined
+                chips
+                counter
+                accept=".pem"
+                required
+                label="Full chain"
+                @input="$v.ceretificate.fullchain.$touch()"
+                @blur="$v.ceretificate.fullchain.$touch()"
+              ></v-file-input>
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-file-input
+                v-model="ceretificate.chain"
+                :error-messages="chainError"
+                outlined
+                accept=".pem"
+                chips
+                counter
+                label="Chain"
+                @input="$v.ceretificate.chain.$touch()"
+                @blur="$v.ceretificate.chain.$touch()"
+              ></v-file-input>
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-file-input
+                v-model="ceretificate.key"
+                :error-messages="keyError"
+                outlined
+                chips
+                accept=".pem"
+                counter
+                label="Private key/private"
+                @input="$v.ceretificate.key.$touch()"
+                @blur="$v.ceretificate.key.$touch()"
+              ></v-file-input>
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-file-input
+                v-model="ceretificate.cert"
+                :error-messages="certError"
+                outlined
+                chips
+                accept=".pem"
+                counter
+                label="Cert"
+              ></v-file-input>
             </v-col>
           </v-row>
           <v-card-actions class="mx-auto text-center justify-center">
             <v-spacer></v-spacer>
-            <v-btn type="submit" color="primary white--text" class="ma-3">
-              {{ buttonText }}
-            </v-btn>
+            <div v-if="addCert">
+              <v-btn
+                type="submit"
+                color="primary white--text"
+                class="ma-3"
+                :disabled="!valid"
+                @click.prevent="save"
+              >
+                {{ buttonText }}
+              </v-btn>
+            </div>
+            <div v-if="editCert">
+              <v-btn
+                type="submit"
+                color="primary white--text"
+                class="ma-3"
+                @click="edit"
+              >
+                {{ buttonText }}
+              </v-btn>
+            </div>
             <v-btn color="error white--text" class="ma-3" @click="clear">
               {{ cancelAction }}
             </v-btn>
@@ -63,12 +139,12 @@
 <style lang="scss" scoped></style>
 <script>
 import { required } from 'vuelidate/lib/validators';
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   name: 'AddGroup',
   props: {
-    fillCert: {
+    ceretificate: {
       type: Object,
       required: true
     },
@@ -79,12 +155,22 @@ export default {
     cancelAction: {
       type: String,
       required: true
+    },
+    addCert: {
+      type: Function,
+      required: false,
+      default: null
+    },
+    editCert: {
+      type: Function,
+      required: false,
+      default: null
     }
   },
   data() {
     return {
       test: '',
-      valid: true
+      valid: false
       // ceretificate: {
       //   fullchain: null,
       //   key: null,
@@ -100,9 +186,8 @@ export default {
     }),
     nameError() {
       const errors = [];
-      if (!this.$v.fillCert.thumbnailUrl.$dirty) return errors;
-      !this.$v.fillCert.thumbnailUrl.required &&
-        errors.push('Field is required');
+      if (!this.$v.ceretificate.name.$dirty) return errors;
+      !this.$v.ceretificate.name.required && errors.push('Field is required');
       return errors;
     },
     fullchainError() {
@@ -134,39 +219,50 @@ export default {
       return errors;
     }
   },
+  created() {
+    this.$store.commit('certificate/SET_NOTIFICATION', {
+      message: 'Attention! editing mood activated.',
+      show: true
+    });
+  },
   methods: {
-    ...mapActions({
-      addme: 'certificate/addTodo'
-    }),
-    handleSubmit(e) {
-      // this.$emit('readyToUpdate', this.fillCert);
-      this.submitted = true;
+    save() {
       this.$v.$touch();
-      if (this.$v.fillCert.$error) {
+      if (this.$v.ceretificate.$error) {
         this.$v.$touch();
       } else {
-        // console.log('my component fillcert ', this.fillCert);
-        this.addme(this.fillCert);
-        if (this.snackbar.color === 'red') {
-          console.log(this.snackbar.color);
-          this.$router.push({
-            path: `/certificate/edit/${this.$route.params.id}`
-          });
-        } else {
-          // setTimeout(
-          //   () => this.$router.push({ path: '/certificate/list/' }),
-          //   4000
-          // );
-        }
-        // this.$store.dispatch('certificate/addTodo', this.fillCert);
+        this.addCert();
       }
     },
+    // handleSubmit(e) {
+    //   if (this.$v.fillCert.$error) {
+    //     this.$v.$touch();
+    //   } else {
+    //     this.save();
+    //   }
+    // },
+    // ...mapActions({
+    //   addme: 'certificate/addTodo'
+    // }),
+    // handleSubmit(e) {
+    //   this.submitted = true;
+    //   this.$v.$touch();
+    //   if (this.$v.fillCert.$error) {
+    //     this.$v.$touch();
+    //   } else {
+    //     this.addme(this.fillCert);
+    //     setTimeout(
+    //       () => this.$router.push({ path: '/certificate/list/' }),
+    //       6000
+    //     );
+    //   }
+    // },
     clear() {
       this.$v.$reset();
-      this.fillCert.name = '';
-      this.fillCert.fullchain = null;
-      this.fillCert.cert = null;
-      this.fillCert.chain = null;
+      this.ceretificate.name = '';
+      this.ceretificate.fullchain = null;
+      this.ceretificate.cert = null;
+      this.ceretificate.chain = null;
       this.$store.commit('certificate/SET_NOTIFICATION', {
         message: 'All validation cleared!',
         color: 'warning',
@@ -175,12 +271,12 @@ export default {
     }
   },
   validations: {
-    fillCert: {
-      title: { required },
-      thumbnailUrl: { required }
-      // key: { required },
-      // cert: { required },
-      // chain: { required }
+    ceretificate: {
+      name: { required },
+      fullchain: { required },
+      key: { required },
+      cert: { required },
+      chain: { required }
     }
   }
 };
