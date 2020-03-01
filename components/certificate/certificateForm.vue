@@ -20,26 +20,6 @@
       <v-card-text class="py-4">
         <v-form v-model="valid" novalidate="true">
           <v-row>
-            <!-- <v-col>
-              <v-text-field
-                v-model.trim="fillCert.title"
-                label="test name"
-                type="text"
-                outlined
-              />
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-model.trim="fillCert.thumbnailUrl"
-                prepend-inner-icon="mdi-account-outline"
-                label="Name"
-                :error-messages="nameError"
-                type="text"
-                outlined
-                @input="$v.fillCert.thumbnailUrl.$touch()"
-                @blur="$v.fillCert.thumbnailUrl.$touch()"
-              />
-            </v-col> -->
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="ceretificate.name"
@@ -59,7 +39,6 @@
                 outlined
                 chips
                 counter
-                accept=".pem"
                 required
                 label="Full chain"
                 @input="$v.ceretificate.fullchain.$touch()"
@@ -122,7 +101,7 @@
                 type="submit"
                 color="primary white--text"
                 class="ma-3"
-                @click="edit"
+                @click.prevent="edit"
               >
                 {{ buttonText }}
               </v-btn>
@@ -221,8 +200,8 @@ export default {
   },
   created() {
     this.$store.commit('certificate/SET_NOTIFICATION', {
-      message: 'Attention! editing mood activated.',
-      show: true
+      message: '',
+      show: false
     });
   },
   methods: {
@@ -232,6 +211,14 @@ export default {
         this.$v.$touch();
       } else {
         this.addCert();
+      }
+    },
+    edit() {
+      this.$v.$touch();
+      if (this.$v.ceretificate.$error) {
+        this.$v.$touch();
+      } else {
+        this.editCert();
       }
     },
     // handleSubmit(e) {

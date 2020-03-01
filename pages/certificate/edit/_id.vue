@@ -1,15 +1,15 @@
 <template>
   <div>
-    <v-alert color="pink">
+    <!-- <v-alert color="pink">
       {{ id }}
-    </v-alert>
+    </v-alert> -->
     <certificateForm
-      :fill-cert="selected"
+      :ceretificate="fillCert"
       :button-text="'Update'"
       :cancel-action="'Clear'"
+      :edit-cert="editMe"
     />
-    {{ selected }} ---- {{ selected.title }} ----
-    <v-alert color="red"> state : {{ fill.name }} </v-alert>
+    <v-alert color="red"> state : {{ fillCert }} </v-alert>
   </div>
 </template>
 
@@ -24,16 +24,16 @@ export default {
   },
   data() {
     return {
-      id: '',
-      fill: {
-        title: 'dd',
-        name: this.$store.state.certificate.getOneCert
-      }
+      id: ''
+      // fill: {
+      //   title: 'dd',
+      //   name: this.$store.state.certificate.getOneCert
+      // }
     };
   },
   computed: {
     ...mapGetters({
-      selected: 'certificate/getCert'
+      fillCert: 'certificate/getCert'
     })
   },
   mounted() {
@@ -43,6 +43,11 @@ export default {
   methods: {
     fetchCertificate() {
       this.$store.dispatch('certificate/showCert', this.id);
+    },
+    editMe() {
+      console.log('formpage', this.fillCert);
+      this.$store.dispatch('certificate/addTodo', this.fillCert);
+      setTimeout(() => this.$router.push({ path: '/certificate/list/' }), 6000);
     }
   }
 };

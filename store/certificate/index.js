@@ -87,7 +87,14 @@ export const actions = {
       );
       console.log(response);
       commit('SHOW_CERT', response);
-    } catch (e) {}
+    } catch (e) {
+      commit('SET_NOTIFICATION', {
+        show: true,
+        color: 'red',
+        message: 'An error accrued while fill the form!',
+        e: e.name
+      });
+    }
   },
   async addTodo({ commit }, title) {
     try {
