@@ -1,8 +1,5 @@
 <template>
   <div>
-    <!-- <v-alert color="pink">
-      {{ id }}
-    </v-alert> -->
     <certificateForm
       :ceretificate="fillCert"
       :button-text="'Update'"

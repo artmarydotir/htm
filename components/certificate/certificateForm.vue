@@ -40,6 +40,7 @@
                 chips
                 counter
                 required
+                accept=".pem"
                 label="Full chain"
                 @input="$v.ceretificate.fullchain.$touch()"
                 @blur="$v.ceretificate.fullchain.$touch()"
@@ -82,6 +83,32 @@
                 label="Cert"
               ></v-file-input>
             </v-col>
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="ceretificate.url"
+                :error-messages="urlError"
+                hint="This field is optional."
+                label="certificate server"
+                type="text"
+                outlined
+                prepend-inner-icon="mdi-link"
+                @input="$v.ceretificate.url.$touch()"
+                @blur="$v.ceretificate.url.$touch()"
+              />
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-text-field
+                v-model.trim="ceretificate.hash"
+                :error-messages="hashError"
+                hint="This field is optional."
+                label="Api token"
+                type="text"
+                outlined
+                prepend-inner-icon="mdi-link"
+                @input="$v.ceretificate.hash.$touch()"
+                @blur="$v.ceretificate.hash.$touch()"
+              />
+            </v-col>
           </v-row>
           <v-card-actions class="mx-auto text-center justify-center">
             <v-spacer></v-spacer>
@@ -117,7 +144,7 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required, url } from 'vuelidate/lib/validators';
 import { mapState } from 'vuex';
 
 export default {
@@ -196,6 +223,21 @@ export default {
       !this.$v.ceretificate.chain.required &&
         errors.push('Chain field is required');
       return errors;
+    },
+    urlError() {
+      const errors = [];
+      if (!this.$v.ceretificate.url.$dirty) return errors;
+      !this.$v.ceretificate.url.url && errors.push('Url is not valid.');
+      return errors;
+    },
+    hashError() {
+      const errors = [];
+      // console.log(this.$v.ceretificate.url);
+      if (!this.$v.ceretificate.url.$invalid) return errors;
+      errors.push(
+        'Api token is required, if you fill the certificate server url.'
+      );
+      return errors;
     }
   },
   created() {
@@ -263,7 +305,9 @@ export default {
       fullchain: { required },
       key: { required },
       cert: { required },
-      chain: { required }
+      chain: { required },
+      url: { url },
+      hash: { required }
     }
   }
 };
