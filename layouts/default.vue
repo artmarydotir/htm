@@ -83,6 +83,32 @@
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
+        <!-- 4 -->
+        <v-list-group
+          v-for="item in vh"
+          :key="item.title"
+          v-model="item.active"
+          no-action
+          value="true"
+          :prepend-icon="item.icon"
+        >
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
+          </template>
+
+          <v-list-item
+            v-for="subItem in item.children"
+            :key="subItem.title"
+            class="py-2"
+            :to="subItem.link"
+          >
+            <v-list-item-content>
+              <v-list-item-title v-text="subItem.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </v-list>
       <template v-slot:append>
         <div class="ma-1">
@@ -151,7 +177,7 @@ export default {
     ],
     upstream: [
       {
-        icon: 'mdi-toolbox-outline',
+        icon: 'mdi-server-security',
         title: 'Upstream Managment',
         active: true,
         children: [
@@ -162,6 +188,23 @@ export default {
           {
             title: 'List Upstream',
             link: '/upstream/list/'
+          }
+        ]
+      }
+    ],
+    vh: [
+      {
+        icon: 'mdi-server-network',
+        title: 'Vitual Host Managment',
+        active: true,
+        children: [
+          {
+            title: 'Add virtual Host',
+            link: '/vh/form/'
+          },
+          {
+            title: 'List Vitual Host',
+            link: '/vh/list/'
           }
         ]
       }
