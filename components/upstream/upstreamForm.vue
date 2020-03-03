@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ $data.upstream }}
     <v-snackbar
       v-model="snackbar.show"
       :color="snackbar.color"
@@ -48,7 +49,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-row v-for="(server, index) in servers" :key="index">
+          <v-row v-for="(server, index) in upstream.serverlist" :key="index">
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.ip"
@@ -265,17 +266,15 @@ export default {
         color: null
       },
       valid: true,
-      servers: [
-        {
-          ip: null,
-          title: 'async',
-          weight: 1,
-          maxconnection: 0,
-          maxfails: 0,
-          backup: true,
-          down: false
-        }
-      ],
+      servers: {
+        ip: null,
+        title: 'async',
+        weight: 1,
+        maxconnection: 0,
+        maxfails: 0,
+        backup: true,
+        down: false
+      },
       upstream: {
         name: '',
         balance: '',
@@ -286,7 +285,18 @@ export default {
         httponly: true,
         secure: true,
         keepreq: 100,
-        keeptimeout: 60
+        keeptimeout: 60,
+        serverlist: [
+          {
+            ip: null,
+            title: 'async',
+            weight: 1,
+            maxconnection: 0,
+            maxfails: 0,
+            backup: true,
+            down: false
+          }
+        ]
       }
     };
   },
@@ -354,15 +364,7 @@ export default {
       };
     },
     add(index) {
-      this.servers.push({
-        ip: null,
-        title: 'async',
-        weight: 1,
-        maxconnection: 0,
-        maxfails: 0,
-        backup: true,
-        down: false
-      });
+      this.upstream.serverlist.push(this.servers);
     },
     remove(index) {
       console.log(index);

@@ -1,0 +1,33 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "location_count" : "2",
+      "protocol": "https",
+      "server_name": [
+        "*.eghtesadnews.com",
+        "eghtesadnews.com",
+        "192.168.0.0.1"
+      ]
+    },
+    {
+      "id": "2",
+      "location_count" : "3",
+      "protocol": "http",
+      "server_name": [
+        "192.168.0.0.2",
+        "ilna.com",
+        "www.ilna.com"
+      ]
+    },
+    {
+      "id": "3",
+      "location_count" : "1",
+      "protocol": "http",
+      "server_name": [
+        "*.aasaam.com",
+        "aasaam.com"
+      ]
+    }
+  ]
+}

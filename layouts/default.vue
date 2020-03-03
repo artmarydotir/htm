@@ -195,7 +195,7 @@ export default {
     vh: [
       {
         icon: 'mdi-server-network',
-        title: 'Vitual Host Managment',
+        title: 'VH Managment',
         active: true,
         children: [
           {

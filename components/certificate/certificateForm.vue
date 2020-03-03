@@ -104,7 +104,7 @@
                 label="Api token"
                 type="text"
                 outlined
-                prepend-inner-icon="mdi-link"
+                prepend-inner-icon="mdi-key-arrow-right"
                 @input="$v.ceretificate.hash.$touch()"
                 @blur="$v.ceretificate.hash.$touch()"
               />
