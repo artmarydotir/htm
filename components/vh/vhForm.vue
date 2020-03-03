@@ -85,14 +85,107 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col v-for="i in vh.hostList" :key="i" cols="12" md="3">
+            <v-col v-for="(s, i) in vh.hostList" :key="i" cols="12" md="3">
               <v-text-field
+                v-model="s.a"
                 prepend-inner-icon="mdi-account-outline"
                 type="text"
                 outlined
               >
                 <template v-slot:label> Host - {{ i + 1 }} </template>
               </v-text-field>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <!-- 6 -->
+          <v-row class="mt-8">
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.keepreq"
+                hint="defualt is 100."
+                outlined
+                min="0"
+                max="1000000"
+                label="Keepalive Request"
+                type="number"
+              />
+            </v-col>
+            <!-- 7 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.keeptimeout"
+                hint="defualt is 60 seconds"
+                outlined
+                min="1"
+                max="3600"
+                label="Keepalive Timeout"
+                type="number"
+              />
+            </v-col>
+            <!-- 8 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.requestpsize"
+                hint="defualt is 4 kb"
+                outlined
+                min="1"
+                label="Request Pull Size"
+                type="number"
+              />
+            </v-col>
+            <!-- 9 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.clientheadertimeoute"
+                hint="defualt is 5 seconds"
+                outlined
+                min="1"
+                max="3600"
+                label="Client Header Timeoute"
+                type="number"
+              />
+            </v-col>
+            <!-- 10 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.clientheaderbuffersize"
+                hint="defualt is 1K."
+                outlined
+                min="1"
+                label="Client Header Buffer Size"
+                type="number"
+              />
+            </v-col>
+            <!-- Large Client header buffer has tow option:  -->
+            <!-- 11 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.lgbuffersize"
+                hint="defualt is 8 kb."
+                outlined
+                min="1"
+                label="Large Client Header Buffer Size"
+                type="number"
+              />
+            </v-col>
+            <!-- 12 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="vh.lgbuffersize"
+                hint="defualt is 4"
+                outlined
+                min="1"
+                label="Large Client Header Buffer Number"
+                type="number"
+              />
+            </v-col>
+            <!-- 13 -->
+            <v-col cols="12" md="3">
+              <v-checkbox
+                v-model="vh.mergeslash"
+                label="Merge /"
+                required
+              ></v-checkbox>
             </v-col>
           </v-row>
           <!-- <v-row class="display-1 py-5">
@@ -236,19 +329,21 @@ export default {
         color: null
       },
       valid: true,
-      hosts: 'e',
+      hosts: 'aa',
       vh: {
         protocol: '',
         certificate: '',
         redirect: true,
         port: '',
-        domain: '',
-        path: '/',
-        httponly: true,
-        secure: true,
         keepreq: 100,
         keeptimeout: 60,
-        hostList: ['e']
+        requestpsize: 4,
+        clientheadertimeoute: 5,
+        clientheaderbuffersize: 1,
+        lgbuffersize: 8,
+        lgbuffernumber: 4,
+        mergeslash: true,
+        hostList: ['']
       }
     };
   },
@@ -279,8 +374,8 @@ export default {
         show: true
       };
     },
-    add(index) {
-      this.vh.hostList.push({});
+    add() {
+      this.vh.hostList.push(this.hosts);
     },
     remove(index) {
       console.log(index);
