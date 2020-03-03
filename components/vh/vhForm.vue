@@ -85,9 +85,9 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col v-for="(s, i) in vh.hostList" :key="i" cols="12" md="3">
+            <v-col v-for="i in vh.hostList" :key="i" cols="12" md="3">
               <v-text-field
-                v-model="s.a"
+                v-model="i.name"
                 prepend-inner-icon="mdi-account-outline"
                 type="text"
                 outlined
@@ -186,6 +186,48 @@
                 label="Merge /"
                 required
               ></v-checkbox>
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-row class="display-1 py-5">
+            <v-col cols="10">
+              <v-icon large>mdi-server</v-icon>
+              <span class="pt-3">
+                Add Location
+              </span>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="3" md="1" class="mr-9">
+              <v-btn color="green" @click="addLocation">
+                Add Location
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row v-for="(loc, index) in vh.loacationList" :key="index">
+            <!-- 1 -->
+            <v-col cols="12" md="3">
+              <v-text-field
+                v-model.trim="loc.path"
+                label="Path"
+                hint="Enter your Path."
+                outlined
+                required
+              />
+            </v-col>
+            <v-col>
+              <v-select
+                v-model="loc.mode"
+                :items="modes"
+                outlined
+                item-text="name"
+                item-key="value"
+                label="Choose Mood"
+                required
+              ></v-select>
+            </v-col>
+            <v-spacer></v-spacer>
+            <v-col cols="4">
+              delete
             </v-col>
           </v-row>
           <!-- <v-row class="display-1 py-5">
@@ -308,6 +350,16 @@ export default {
           value: 'https'
         }
       ],
+      modes: [
+        {
+          name: 'Redirect',
+          value: 'redirect'
+        },
+        {
+          name: 'Proxy',
+          value: 'proxy'
+        }
+      ],
       certificateList: [
         {
           name: '*.eghtesadnews.com',
@@ -329,7 +381,11 @@ export default {
         color: null
       },
       valid: true,
-      hosts: 'aa',
+      hosts: '',
+      locations: {
+        path: '',
+        mode: ''
+      },
       vh: {
         protocol: '',
         certificate: '',
@@ -343,7 +399,8 @@ export default {
         lgbuffersize: 8,
         lgbuffernumber: 4,
         mergeslash: true,
-        hostList: ['']
+        hostList: [],
+        loacationList: [{ path: '' }]
       }
     };
   },
@@ -375,7 +432,12 @@ export default {
       };
     },
     add() {
+      // this.vh.hostList.push(this.hosts);
       this.vh.hostList.push(this.hosts);
+    },
+    addLocation() {
+      // this.vh.hostList.push(this.hosts);
+      this.vh.loacationList.push(this.locations);
     },
     remove(index) {
       console.log(index);
