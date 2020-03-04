@@ -214,7 +214,7 @@
                 required
               />
             </v-col>
-            <v-col>
+            <v-col cols="12" md="3">
               <v-select
                 v-model="loc.mode"
                 :items="modes"
@@ -225,99 +225,29 @@
                 required
               ></v-select>
             </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="4">
-              delete
-            </v-col>
+            <template v-if="loc.mode == 'redirect'">
+              <v-col cols="12" md="3">
+                <v-select
+                  v-model="loc.status"
+                  :items="statuses"
+                  outlined
+                  item-text="name"
+                  item-key="value"
+                  label="Choose Status"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model.trim="loc.tourl"
+                  prepend-inner-icon="mdi-account-outline"
+                  label="To Url"
+                  type="text"
+                  outlined
+                />
+              </v-col>
+            </template>
           </v-row>
-          <!-- <v-row class="display-1 py-5">
-            <v-col cols="11">
-              <v-icon large>mdi-server</v-icon>
-              <span class="pt-3">
-                Server Fields
-              </span>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="3" md="1">
-              <v-btn color="green" @click="add">
-                Add Server
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row v-for="(value, i) in upstream.serverlist" :key="i">
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-model.trim="value.ip"
-                label="Server"
-                hint="Server could be ip/host+port"
-                outlined
-                required
-              />
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-model.trim="value.title"
-                label="Title"
-                hint="Title should be uniqe"
-                outlined
-                required
-              />
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-model.trim.number="value.weight"
-                hint="default value of weight is 1."
-                outlined
-                min="1"
-                max="99"
-                label="weight"
-                type="number"
-              />
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-model.trim="value.maxconnection"
-                hint="Could be 0 to unlimited."
-                outlined
-                min="0"
-                label="Max Connection"
-                type="number"
-              />
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-text-field
-                v-model.trim="value.maxfails"
-                hint="Sould come with timeout."
-                outlined
-                min="1"
-                label="Max Fails"
-                type="number"
-              />
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-checkbox
-                v-model="value.backup"
-                label="Backup"
-                required
-              ></v-checkbox>
-            </v-col>
-            <v-col cols="12" md="3">
-              <v-checkbox
-                v-model="value.down"
-                label="Down"
-                required
-              ></v-checkbox>
-            </v-col>
-            <v-spacer></v-spacer>
-            <v-col cols="4">
-              <v-btn class="mx-2" dark color="pink" @click="remove(index)">
-                Delete server
-              </v-btn>
-            </v-col>
-            <v-col v-if="servers.length >= 1" cols="12" class="pb-6">
-              <v-divider></v-divider>
-            </v-col>
-          </v-row> -->
           <v-card-actions class="mx-auto text-center justify-center">
             <v-spacer></v-spacer>
             <v-btn type="submit" color="primary white--text" class="ma-3">
@@ -360,6 +290,16 @@ export default {
           value: 'proxy'
         }
       ],
+      statuses: [
+        {
+          name: '301',
+          value: '301'
+        },
+        {
+          name: '302',
+          value: '302'
+        }
+      ],
       certificateList: [
         {
           name: '*.eghtesadnews.com',
@@ -381,11 +321,7 @@ export default {
         color: null
       },
       valid: true,
-      hosts: '',
-      locations: {
-        path: '',
-        mode: ''
-      },
+      value: '',
       vh: {
         protocol: '',
         certificate: '',
@@ -400,7 +336,7 @@ export default {
         lgbuffernumber: 4,
         mergeslash: true,
         hostList: [],
-        loacationList: [{ path: '' }]
+        loacationList: [{ path: '', mode: '' }]
       }
     };
   },
@@ -433,11 +369,16 @@ export default {
     },
     add() {
       // this.vh.hostList.push(this.hosts);
-      this.vh.hostList.push(this.hosts);
+      this.vh.hostList.push(this.value);
     },
     addLocation() {
       // this.vh.hostList.push(this.hosts);
-      this.vh.loacationList.push(this.locations);
+      this.vh.loacationList.push({
+        path: '',
+        mode: '',
+        status: '',
+        tourl: ''
+      });
     },
     remove(index) {
       console.log(index);
