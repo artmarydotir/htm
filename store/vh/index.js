@@ -36,7 +36,8 @@ export const mutations = {
 export const actions = {
   async fetchVirtuals({ commit }) {
     try {
-      const res = await this.$axios.$get('/vh.json');
+      const res = await this.$axios.$get('http://127.0.0.1:3000/vh.json');
+      console.log(res);
       commit('FETCH_VH_LIST', res.data);
     } catch (e) {
       console.log(e);

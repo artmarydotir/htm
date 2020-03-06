@@ -42,11 +42,8 @@
                 v-model="vh.certificate"
                 :items="certificateList"
                 outlined
-                item-text="name"
-                item-key="value"
                 label="Choose Certificate"
                 required
-                return-object
               ></v-select>
             </v-col>
             <!-- 3 -->
@@ -214,6 +211,7 @@
                 required
               />
             </v-col>
+            <!-- 2 -->
             <v-col cols="12" md="3">
               <v-select
                 v-model="loc.mode"
@@ -225,6 +223,7 @@
                 required
               ></v-select>
             </v-col>
+            <!-- 3 -->
             <template v-if="loc.mode == 'redirect'">
               <v-col cols="12" md="3">
                 <v-select
@@ -245,6 +244,71 @@
                   type="text"
                   outlined
                 />
+              </v-col>
+            </template>
+            <!-- 4 -->
+            <template v-if="loc.mode == 'proxy'">
+              <v-col cols="12" md="3">
+                <v-select
+                  v-model="loc.upstream"
+                  :items="upstreams"
+                  outlined
+                  item-text="name"
+                  item-key="value"
+                  label="Choose Upstream"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-select
+                  v-model="loc.schema"
+                  :items="schemas"
+                  outlined
+                  item-text="name"
+                  item-key="value"
+                  label="Choose Schema"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-text-field
+                  v-model.trim="loc.clientmbs"
+                  hint="defualt is 1M, maximum is 5g."
+                  outlined
+                  min="1"
+                  max="5000"
+                  label="Client Max Body Size"
+                  type="number"
+                />
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-text-field
+                  v-model.trim="loc.headerbt"
+                  hint="defualt is 10 seconds."
+                  outlined
+                  min="10"
+                  max="100"
+                  label="Header Body Timeout"
+                  type="number"
+                />
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-select
+                  v-model="loc.profile"
+                  :items="profiles"
+                  outlined
+                  item-text="name"
+                  item-key="value"
+                  label="Page Speed Profile"
+                  required
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="3">
+                <v-checkbox
+                  v-model="loc.etag"
+                  label="Etag"
+                  required
+                ></v-checkbox>
               </v-col>
             </template>
           </v-row>
@@ -300,20 +364,11 @@ export default {
           value: '302'
         }
       ],
-      certificateList: [
-        {
-          name: '*.eghtesadnews.com',
-          value: '1'
-        },
-        {
-          name: 'den.com',
-          value: '2'
-        },
-        {
-          name: 'ilna.news',
-          value: '3'
-        }
-      ],
+      profiles: ['profile1', 'profile2'],
+      // request need
+      certificateList: ['*.eghtesadnews.com', 'den.com', 'ilna.news'],
+      upstreams: ['async', 'backup'],
+      schemas: ['http', 'https'],
       snackbar: {
         show: false,
         message: null,
@@ -336,7 +391,7 @@ export default {
         lgbuffernumber: 4,
         mergeslash: true,
         hostList: [],
-        loacationList: [{ path: '', mode: '' }]
+        loacationList: [{ path: '', mode: '', etag: true }]
       }
     };
   },
@@ -377,7 +432,13 @@ export default {
         path: '',
         mode: '',
         status: '',
-        tourl: ''
+        tourl: '',
+        upstream: '',
+        schema: '',
+        clientmbs: '1',
+        headerbt: '10',
+        profile: '',
+        etag: true
       });
     },
     remove(index) {
