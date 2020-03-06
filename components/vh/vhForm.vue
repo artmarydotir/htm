@@ -312,14 +312,16 @@
               </v-col>
               <!-- headers  -->
               <v-row>
-                <v-col cols="12" md="2">
-                  ADD Header:
+                <v-col cols="12" md="1">
+                  <span class="blue--text pa-4">
+                    Header
+                  </span>
                 </v-col>
                 <v-col cols="12" md="3">
-                  <v-text-field label="Key"></v-text-field>
+                  <v-text-field outlined label="Key"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3">
-                  <v-text-field label="Value"></v-text-field>
+                  <v-text-field outlined label="Value"></v-text-field>
                 </v-col>
                 <v-col cols="2">
                   <v-btn
@@ -330,7 +332,6 @@
                     color="green"
                     @click="add(k)"
                   >
-                    >
                     <v-icon dark>mdi-plus</v-icon>
                   </v-btn>
                   <v-btn
@@ -341,7 +342,6 @@
                     color="red"
                     @click="remove(k)"
                   >
-                    >
                     <v-icon dark>mdi-minus</v-icon>
                   </v-btn>
                 </v-col>
