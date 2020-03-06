@@ -310,6 +310,43 @@
                   required
                 ></v-checkbox>
               </v-col>
+              <!-- headers  -->
+              <v-row>
+                <v-col cols="12" md="2">
+                  ADD Header:
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field label="Key"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-text-field label="Value"></v-text-field>
+                </v-col>
+                <v-col cols="2">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="green"
+                    @click="add(k)"
+                  >
+                    >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="red"
+                    @click="remove(k)"
+                  >
+                    >
+                    <v-icon dark>mdi-minus</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <!-- headers  -->
             </template>
           </v-row>
           <v-card-actions class="mx-auto text-center justify-center">
