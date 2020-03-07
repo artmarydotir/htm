@@ -188,7 +188,7 @@
           <v-divider></v-divider>
           <v-row class="display-1 py-5">
             <v-col cols="10">
-              <v-icon large>mdi-server</v-icon>
+              <v-icon large>mdi-city</v-icon>
               <span class="pt-3">
                 Add Location
               </span>
@@ -201,8 +201,13 @@
             </v-col>
           </v-row>
           <v-row v-for="(loc, index) in vh.loacationList" :key="index">
+            <v-col cols="12" md="1">
+              <v-btn class="mt-3" dark color="pink">
+                Location {{ index + 1 }} :
+              </v-btn>
+            </v-col>
             <!-- 1 -->
-            <v-col cols="12" md="3">
+            <v-col cols="12" md="2">
               <v-text-field
                 v-model.trim="loc.path"
                 label="Path"
@@ -311,39 +316,55 @@
                 ></v-checkbox>
               </v-col>
               <!-- headers  -->
+              {{ vh.loacationList }}
               <v-row>
-                <v-col cols="12" md="1">
-                  <span class="blue--text pa-4">
-                    Header
-                  </span>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field outlined label="Key"></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-text-field outlined label="Value"></v-text-field>
-                </v-col>
-                <v-col cols="2">
-                  <v-btn
-                    class="mx-2"
-                    fab
-                    dark
-                    small
-                    color="green"
-                    @click="add(k)"
-                  >
-                    <v-icon dark>mdi-plus</v-icon>
-                  </v-btn>
-                  <v-btn
-                    class="mx-2"
-                    fab
-                    dark
-                    small
-                    color="red"
-                    @click="remove(k)"
-                  >
-                    <v-icon dark>mdi-minus</v-icon>
-                  </v-btn>
+                <v-col
+                  v-for="(custom, k) in customs"
+                  :key="k"
+                  cols="12"
+                  md="10"
+                >
+                  <v-row>
+                    <v-col cols="12" md="1">
+                      <p class="caption pl-3 pt-4">Headers {{ k + 1 }} :</p>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-text-field
+                        v-model.trim="custom.key"
+                        outlined
+                        label="Key"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-text-field
+                        v-model.trim="custom.val"
+                        outlined
+                        label="Value"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="2">
+                      <v-btn
+                        class="mx-2"
+                        fab
+                        dark
+                        small
+                        color="green"
+                        @click="addHeader(k)"
+                      >
+                        <v-icon dark>mdi-plus</v-icon>
+                      </v-btn>
+                      <v-btn
+                        class="mx-2"
+                        fab
+                        dark
+                        small
+                        color="red"
+                        @click="removeHeader(k)"
+                      >
+                        <v-icon dark>mdi-minus</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
               <!-- headers  -->
@@ -428,8 +449,21 @@ export default {
         lgbuffernumber: 4,
         mergeslash: true,
         hostList: [],
-        loacationList: [{ path: '', mode: '', etag: true }]
-      }
+        loacationList: [
+          {
+            path: '',
+            mode: '',
+            etag: true
+            // headers: []
+          }
+        ]
+      },
+      customs: [
+        {
+          key: '',
+          val: ''
+        }
+      ]
     };
   },
   methods: {
@@ -475,12 +509,22 @@ export default {
         clientmbs: '1',
         headerbt: '10',
         profile: '',
-        etag: true
+        etag: true,
+        headers: []
       });
     },
     remove(index) {
       console.log(index);
       this.servers.splice(index, 1);
+    },
+    addHeader(index) {
+      console.log(index);
+      console.log(this.customs);
+      console.log(typeof this.vh.loacationList.headers);
+      // this.vh.loacationList.headers.push(this.customs);
+    },
+    removeHeader(index) {
+      this.customs.splice(index, 1);
     }
   },
   validations: {
