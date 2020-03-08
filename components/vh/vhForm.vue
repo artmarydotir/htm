@@ -33,7 +33,6 @@
                 item-key="value"
                 label="Choose Protocol"
                 required
-                return-object
               ></v-select>
             </v-col>
             <!-- 2 -->
@@ -316,10 +315,11 @@
                 ></v-checkbox>
               </v-col>
               <!-- headers  -->
-              {{ vh.loacationList }}
+              <!-- {{ vh.loacationList.headers }} -->
+              <!-- {{ loc.headers }} -->
               <v-row>
                 <v-col
-                  v-for="(custom, k) in customs"
+                  v-for="(custom, k) in loc.headers"
                   :key="k"
                   cols="12"
                   md="10"
@@ -342,29 +342,29 @@
                         label="Value"
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="2">
-                      <v-btn
-                        class="mx-2"
-                        fab
-                        dark
-                        small
-                        color="green"
-                        @click="addHeader(k)"
-                      >
-                        <v-icon dark>mdi-plus</v-icon>
-                      </v-btn>
-                      <v-btn
-                        class="mx-2"
-                        fab
-                        dark
-                        small
-                        color="red"
-                        @click="removeHeader(k)"
-                      >
-                        <v-icon dark>mdi-minus</v-icon>
-                      </v-btn>
-                    </v-col>
                   </v-row>
+                </v-col>
+                <v-col cols="2">
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="green"
+                    @click="addHeader(index)"
+                  >
+                    <v-icon dark>mdi-plus</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="red"
+                    @click="removeHeader(index)"
+                  >
+                    <v-icon dark>mdi-minus</v-icon>
+                  </v-btn>
                 </v-col>
               </v-row>
               <!-- headers  -->
@@ -453,17 +453,11 @@ export default {
           {
             path: '',
             mode: '',
-            etag: true
-            // headers: []
+            etag: true,
+            headers: [{ key: '', val: '' }]
           }
         ]
-      },
-      customs: [
-        {
-          key: '',
-          val: ''
-        }
-      ]
+      }
     };
   },
   methods: {
@@ -509,8 +503,7 @@ export default {
         clientmbs: '1',
         headerbt: '10',
         profile: '',
-        etag: true,
-        headers: []
+        etag: true
       });
     },
     remove(index) {
@@ -519,12 +512,19 @@ export default {
     },
     addHeader(index) {
       console.log(index);
-      console.log(this.customs);
-      console.log(typeof this.vh.loacationList.headers);
+      // console.log(typeof this.vh.loacationList[index].headers);
+      this.vh.loacationList[index].headers.push({
+        key: '',
+        val: ''
+      });
+      // this.vh.loacationList.headers.push({
+      //   key: '',
+      //   val: ''
+      // });
       // this.vh.loacationList.headers.push(this.customs);
     },
     removeHeader(index) {
-      this.customs.splice(index, 1);
+      this.vh.loacationList[index].headers.splice(index, 1);
     }
   },
   validations: {
