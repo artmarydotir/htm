@@ -503,7 +503,8 @@ export default {
         clientmbs: '1',
         headerbt: '10',
         profile: '',
-        etag: true
+        etag: true,
+        headers: []
       });
     },
     remove(index) {
