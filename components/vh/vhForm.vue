@@ -81,14 +81,19 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col v-for="i in vh.hostList" :key="i" cols="12" md="3">
+            <v-col
+              v-for="(host, index) in vh.hostList"
+              :key="index"
+              cols="12"
+              md="3"
+            >
               <v-text-field
-                v-model="i.name"
+                v-model="host.name"
                 prepend-inner-icon="mdi-account-outline"
                 type="text"
                 outlined
               >
-                <template v-slot:label> Host - {{ i + 1 }} </template>
+                <template v-slot:label> Host {{ index + 1 }} </template>
               </v-text-field>
             </v-col>
           </v-row>
@@ -434,7 +439,7 @@ export default {
         color: null
       },
       valid: true,
-      value: '',
+      // name: '',
       vh: {
         protocol: '',
         certificate: '',
@@ -488,11 +493,10 @@ export default {
       };
     },
     add() {
-      // this.vh.hostList.push(this.hosts);
-      this.vh.hostList.push(this.value);
+      console.log(this.vh.hostList);
+      this.vh.hostList.push({ name });
     },
     addLocation() {
-      // this.vh.hostList.push(this.hosts);
       this.vh.loacationList.push({
         path: '',
         mode: '',
