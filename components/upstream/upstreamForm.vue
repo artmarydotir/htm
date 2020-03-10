@@ -26,13 +26,17 @@
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="upstream.name"
+                :error-messages="upstreamNameError"
                 prepend-inner-icon="mdi-account-outline"
                 label="Upstream Name"
                 type="text"
                 outlined
+                @input="$v.upstream.name.$touch()"
+                @blur="$v.upstream.name.$touch()"
               />
             </v-col>
           </v-row>
+          {{ $v.upstream.name }}
           <v-divider></v-divider>
           <!-- server  -->
           <v-row class="display-1 py-5">
@@ -53,12 +57,16 @@
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.ip"
+                :error-messages="ipError"
                 label="Server"
                 hint="Server could be ip/host+port"
                 outlined
                 required
+                @input="$v.upstream.serverlist.$each['0'].ip.$touch()"
+                @blur="$v.upstream.serverlist.$each['0'].ip.$touch()"
               />
             </v-col>
+            {{ $v.upstream.serverlist.$each['0'].ip }}
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.title"
@@ -119,7 +127,11 @@
                 Delete server
               </v-btn>
             </v-col>
-            <v-col v-if="servers.length >= 1" cols="12" class="pb-6">
+            <v-col
+              v-if="upstream.serverlist.length >= 1"
+              cols="12"
+              class="pb-6"
+            >
               <v-divider></v-divider>
             </v-col>
           </v-row>
@@ -239,7 +251,7 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required, ipAddress } from 'vuelidate/lib/validators';
 export default {
   name: 'AddGroup',
   data() {
@@ -266,15 +278,15 @@ export default {
         color: null
       },
       valid: true,
-      servers: {
-        ip: null,
-        title: 'async',
-        weight: 1,
-        maxconnection: 0,
-        maxfails: 0,
-        backup: true,
-        down: false
-      },
+      // servers: {
+      //   ip: null,
+      //   title: 'async',
+      //   weight: 1,
+      //   maxconnection: 0,
+      //   maxfails: 0,
+      //   backup: true,
+      //   down: false
+      // },
       upstream: {
         name: '',
         balance: '',
@@ -301,17 +313,21 @@ export default {
     };
   },
   computed: {
-    nameError() {
+    upstreamNameError() {
       const errors = [];
-      if (!this.$v.ceretificate.name.$dirty) return errors;
-      !this.$v.ceretificate.name.required && errors.push('Field is required');
+      if (!this.$v.upstream.name.$dirty) return errors;
+      !this.$v.upstream.name.required && errors.push('Field is required');
       return errors;
     },
-    fullchainError() {
+    ipError() {
       const errors = [];
-      if (!this.$v.ceretificate.fullchain.$dirty) return errors;
-      !this.$v.ceretificate.fullchain.required &&
-        errors.push('Fullchain is required');
+      // console.log(this.$v.upstream.listserver);
+      if (!this.$v.upstream.serverlist.$each['0'].ip.$dirty) return errors;
+      // console.log(this.$v.upstream.);
+      !this.$v.upstream.serverlist.$each['0'].ip.ipAddress &&
+        errors.push('Must be valid ip');
+      !this.$v.upstream.serverlist.$each['0'].ip.required &&
+        errors.push('Field is required');
       return errors;
     },
     keyError() {
@@ -340,8 +356,8 @@ export default {
     handleSubmit(e) {
       this.submitted = true;
       this.$v.$touch();
-
-      if (this.$v.ceretificate.$error) {
+      //  if (this.$v.form.$pending || this.$v.form.$error) return;
+      if (this.$v.upstream.$error) {
         this.snackbar = {
           message: 'please check all errors!',
           color: 'pink',
@@ -364,20 +380,32 @@ export default {
       };
     },
     add(index) {
-      this.upstream.serverlist.push(this.servers);
+      this.upstream.serverlist.push({
+        ip: null,
+        title: 'async',
+        weight: 1,
+        maxconnection: 0,
+        maxfails: 0,
+        backup: true,
+        down: false
+      });
     },
     remove(index) {
       console.log(index);
-      this.servers.splice(index, 1);
+      this.upstream.serverlist.splice(index, 1);
     }
   },
   validations: {
-    ceretificate: {
+    upstream: {
       name: { required },
-      fullchain: { required },
-      key: { required },
-      cert: { required },
-      chain: { required }
+      serverlist: {
+        $each: {
+          ip: {
+            required,
+            ipAddress
+          }
+        }
+      }
     }
   }
 };
