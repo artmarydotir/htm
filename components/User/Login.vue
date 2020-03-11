@@ -1,69 +1,78 @@
 <template>
-  <v-card class="mx-auto border-rad" height="600px">
-    <v-card-text>
-      <v-row>
-        <v-col sm="12" md="6" lg="7">
-          <v-card-title
-            class="my-10 text-center justify-center display-1 text--primary"
-          >
-            WELCOME
-          </v-card-title>
-          <v-form
-            v-model="valid"
-            novalidate="true"
-            @submit.prevent="handleSubmit"
-          >
-            <v-col class="mx-auto" cols="12" md="9" lg="8">
-              <v-text-field
-                v-model.trim="user.email"
-                :error-messages="emailErrors"
-                label="Email"
-                name="login"
-                type="email"
-                outlined
-                required
-                prepend-inner-icon="mdi-email-outline"
-                @input="$v.user.email.$touch()"
-                @blur="$v.user.email.$touch()"
-              />
-            </v-col>
-            <v-col class="mx-auto" cols="12" md="9" lg="8">
-              <v-text-field
-                v-model.trim="user.password"
-                :error-messages="passwordErrors"
-                :counter="6"
-                label="Password"
-                :append-icon="show1 ? 'mdi-eye-off-outline' : 'mdi-eye'"
-                :type="show1 ? 'text' : 'password'"
-                outlined
-                small
-                required
-                prepend-inner-icon="mdi-lock"
-                @click:append="show1 = !show1"
-                @input="$v.user.password.$touch()"
-                @blur="$v.user.password.$touch()"
-              />
-            </v-col>
-            <v-card-actions class="mx-auto text-center justify-center">
-              <v-btn
-                type="submit"
-                x-large
-                color="warning white--text"
-                class="pl-12 pr-12"
-                :disabled="!valid"
-              >
-                LOGIN
-                <v-icon right dark>
-                  mdi-arrow-right
-                </v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+  <ValidationObserver ref="obs" v-slot="{ invalid, validated, passes }">
+    <v-card class="mx-auto border-rad" height="600px">
+      <v-card-text>
+        <v-row>
+          <v-col sm="12" md="6" lg="7">
+            <v-card-title
+              class="my-10 text-center justify-center display-1 text--primary"
+            >
+              WELCOME
+            </v-card-title>
+            <v-form novalidate="true" @submit.prevent="handleSubmit">
+              <v-col class="mx-auto" cols="12" md="9" lg="8">
+                <ValidationProvider
+                  v-slot="{ errors, valid }"
+                  name="Email"
+                  rules="required|email"
+                >
+                  <v-text-field
+                    v-model.trim="user.email"
+                    :error-messages="errors"
+                    :success="valid"
+                    label="Email"
+                    type="email"
+                    outlined
+                    required
+                    prepend-inner-icon="mdi-email-outline"
+                  />
+                </ValidationProvider>
+              </v-col>
+              <v-col class="mx-auto" cols="12" md="9" lg="8">
+                <ValidationProvider
+                  v-slot="{ errors, valid }"
+                  name="Password"
+                  rules="required|min:6"
+                >
+                  <v-text-field
+                    v-model.trim="user.password"
+                    :error-messages="errors"
+                    :success="valid"
+                    :counter="6"
+                    label="Password"
+                    :append-icon="show1 ? 'mdi-eye-off-outline' : 'mdi-eye'"
+                    :type="show1 ? 'text' : 'password'"
+                    outlined
+                    small
+                    required
+                    prepend-inner-icon="mdi-lock"
+                    @click:append="show1 = !show1"
+                  />
+                </ValidationProvider>
+              </v-col>
+              <v-card-actions class="mx-auto text-center justify-center">
+                <v-btn
+                  type="submit"
+                  x-large
+                  color="warning white--text"
+                  class="pl-12 pr-12"
+                  :disabled="invalid || !validated"
+                  @click="passes(handleSubmit)"
+                >
+                  LOGIN
+                  <v-icon right dark>
+                    mdi-arrow-right
+                  </v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </ValidationObserver>
 </template>
+
 <style lang="scss" scoped>
 .border-rad {
   -webkit-box-shadow: -2px 3px 21px -1px rgba(59, 86, 148, 1);
@@ -81,10 +90,14 @@
 }
 </style>
 <script>
-import { required, minLength, email } from 'vuelidate/lib/validators';
+import { ValidationObserver, ValidationProvider } from 'vee-validate';
 
 export default {
   name: 'Login',
+  components: {
+    ValidationProvider,
+    ValidationObserver
+  },
   data() {
     return {
       user: {
@@ -93,38 +106,14 @@ export default {
       },
       submitted: false,
       show1: false,
-      show2: false,
-      valid: true
+      show2: false
     };
-  },
-  validations: {
-    user: {
-      email: { required, email },
-      password: { required, minLength: minLength(6) }
-    }
-  },
-  computed: {
-    emailErrors() {
-      const errors = [];
-      if (!this.$v.user.email.$dirty) return errors;
-      !this.$v.user.email.email && errors.push('Must be valid e-mail');
-      !this.$v.user.email.required && errors.push('E-mail is required');
-      return errors;
-    },
-    passwordErrors() {
-      const errors = [];
-      if (!this.$v.user.password.$dirty) return errors;
-      !this.$v.user.password.minLength &&
-        errors.push('Password must be at least 6 characters long');
-      !this.$v.user.password.required && errors.push('Password is required.');
-      return errors;
-    }
   },
   methods: {
     handleSubmit(e) {
       this.submitted = true;
-      this.$v.$touch();
-      if (this.$v.user.$error) return;
+
+      this.$refs.obs.validate();
       // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user));
       this.$router.push('/dashboard/');
     }

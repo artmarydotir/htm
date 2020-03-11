@@ -391,7 +391,6 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
-import { required } from 'vuelidate/lib/validators';
 export default {
   name: 'AddGroup',
   data() {
@@ -530,15 +529,6 @@ export default {
     },
     removeHeader(index) {
       this.vh.loacationList[index].headers.splice(index, 1);
-    }
-  },
-  validations: {
-    ceretificate: {
-      name: { required },
-      fullchain: { required },
-      key: { required },
-      cert: { required },
-      chain: { required }
     }
   }
 };

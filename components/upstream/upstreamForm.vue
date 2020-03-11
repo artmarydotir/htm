@@ -66,7 +66,8 @@
                 @blur="$v.upstream.serverlist.$each['0'].ip.$touch()"
               />
             </v-col>
-            {{ $v.upstream.serverlist.$each['0'].ip }}
+            <!-- {{ $v.upstream.serverlist.$each['0'].ip }} -->
+            {{ $v.upstream.serverlist.$each['0'] }}
             <v-col cols="12" md="3">
               <v-text-field
                 v-model.trim="server.title"
@@ -251,7 +252,10 @@
 </template>
 <style lang="scss" scoped></style>
 <script>
-import { required, ipAddress } from 'vuelidate/lib/validators';
+// import { required, ipAddress, } from 'vuelidate/lib/validators';
+// eslint-disable-next-line no-unused-vars
+import { isHost } from '@/plugins/validators';
+
 export default {
   name: 'AddGroup',
   data() {
@@ -328,6 +332,8 @@ export default {
         errors.push('Must be valid ip');
       !this.$v.upstream.serverlist.$each['0'].ip.required &&
         errors.push('Field is required');
+      !this.$v.upstream.serverlist.$each['0'].ip.isHost &&
+        errors.push('Field is not valid Host');
       return errors;
     },
     keyError() {
@@ -394,19 +400,21 @@ export default {
       console.log(index);
       this.upstream.serverlist.splice(index, 1);
     }
-  },
-  validations: {
-    upstream: {
-      name: { required },
-      serverlist: {
-        $each: {
-          ip: {
-            required,
-            ipAddress
-          }
-        }
-      }
-    }
   }
+  // validations: {
+  //   upstream: {
+  //     name: { required },
+  //     serverlist: {
+  //       $each: {
+  //         ip: {
+  //           required,
+  //           ipAddress,
+  //           email
+  //           // ipAddress: or(email)
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 };
 </script>

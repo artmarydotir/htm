@@ -6,7 +6,7 @@
       :cancel-action="'Cancel'"
       :add-cert="saveMe"
     />
-    <!-- {{ fill }} -->
+    {{ fill }}
   </div>
 </template>
 <script>

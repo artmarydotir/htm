@@ -33,7 +33,7 @@ export default {
    */
   plugins: [
     '~/plugins/i18n.js',
-    '~/plugins/vuelidate.js'
+    '~/plugins/vee-validate.js'
     // '~/plugins/repository.js'
   ],
   /*
@@ -83,6 +83,9 @@ export default {
    ** Build configuration
    */
   build: {
+    transpile: [
+      "vee-validate/dist/rules"
+    ],
     /*
      ** You can extend webpack config here
      */

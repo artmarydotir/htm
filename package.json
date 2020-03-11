@@ -17,6 +17,7 @@
     "@nuxtjs/axios": "^5",
     "@nuxtjs/pwa": "^3.0.0-0",
     "nuxt": "^2",
+    "vee-validate": "^3.2.5",
     "vue-i18n": "^8.15.3",
     "vuelidate": "^0.7.5",
     "vuelidate-error-extractor": "^2.4.1"
