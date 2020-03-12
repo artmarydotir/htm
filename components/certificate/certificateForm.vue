@@ -109,9 +109,9 @@
               </v-col>
               <v-col cols="12" md="3">
                 <ValidationProvider
-                  v-slot="{ errors, valid }"
+                  v-slot="{ errors }"
                   name="Ceretificate url"
-                  rules="required"
+                  rules="validUrl"
                 >
                   <v-text-field
                     v-model.trim="ceretificate.url"
@@ -119,26 +119,25 @@
                     hint="This field is optional."
                     label="certificate server"
                     type="text"
-                    :success="valid"
+                    :success="errors.length == '' && ceretificate.url !== ''"
                     outlined
                     prepend-inner-icon="mdi-link"
                   />
                 </ValidationProvider>
               </v-col>
-              <v-col cols="12" md="2">
+              <v-col v-if="ceretificate.url" cols="12" md="3">
                 <ValidationProvider
-                  v-slot="{ errors, valid }"
+                  v-slot="{ errors }"
                   name="Api token"
                   rules="required"
                 >
                   <v-text-field
                     v-model.trim="ceretificate.hash"
                     :error-messages="errors"
-                    hint="This field is optional."
                     label="Api token"
                     type="text"
-                    :success="valid"
                     outlined
+                    required
                     prepend-inner-icon="mdi-key-arrow-right"
                   />
                 </ValidationProvider>
