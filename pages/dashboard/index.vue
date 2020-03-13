@@ -5,11 +5,6 @@
         <v-col>
           <Breadcrumb :breadcrumbs="breadcrumbs" />
         </v-col>
-        <v-col cols="12">
-          <p class="display-2 text-center justify-center pb-4">
-            Dashboard
-          </p>
-        </v-col>
       </v-row>
     </v-container>
   </v-content>
