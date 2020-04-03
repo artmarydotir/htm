@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :dark="setTheme">
     <v-navigation-drawer
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
@@ -133,6 +133,7 @@
       <v-btn icon>
         <v-icon>mdi-bell</v-icon>
       </v-btn>
+      <v-switch v-model="goDark" :label="`Dark Theme`"></v-switch>
     </v-app-bar>
     <v-content>
       <v-container :fluid="$vuetify.breakpoint.mdAndUp ? false : true">
@@ -146,6 +147,7 @@
 export default {
   data: () => ({
     drawer: null,
+    goDark: false,
     admins: [
       {
         icon: 'mdi-contacts',
@@ -209,7 +211,18 @@ export default {
         ]
       }
     ]
-  })
+  }),
+  computed: {
+    setTheme() {
+      if (this.goDark === true) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        return (this.$vuetify.theme.dark = true);
+      } else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        return (this.$vuetify.theme.dark = false);
+      }
+    }
+  }
 };
 </script>
 <style scoped>
